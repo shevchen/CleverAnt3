@@ -1,10 +1,10 @@
 package core;
 
-import java.util.Random;
+import ec.util.MersenneTwisterFast;
 
 public class MooreMachineGenerator {
 	public static MooreMachine generate() {
-		final Random rand = Constants.rand;
+		final MersenneTwisterFast rand = Constants.rand;
 		final int states = Constants.STATES_NUMBER;
 		int startState = rand.nextInt(states);
 		int significantMask = 0;

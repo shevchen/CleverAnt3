@@ -33,7 +33,7 @@ public class MooreMachine implements Cloneable {
 		}
 		this.startState = startState;
 		this.significantMask = significantMask;
-		this.nextState = nextState.clone();
+		this.nextState = Constants.clone(nextState);
 		this.moves = moves.clone();
 	}
 
@@ -65,16 +65,16 @@ public class MooreMachine implements Cloneable {
 	}
 
 	public int[][] getNextStateArray() {
-		return nextState.clone();
+		return Constants.clone(nextState);
 	}
 
 	public Turn[] getMovesArray() {
-		return moves;
+		return moves.clone();
 	}
 
 	public void print(PrintWriter out) {
 		out.println("Start state = " + startState);
-		out.print("Significant inputs");
+		out.print("Significant inputs:");
 		final int vis = Constants.VISIBLE_CELLS;
 		for (int i = 0; i < vis; ++i) {
 			if (((significantMask >> i) & 1) == 1) {

@@ -1,7 +1,8 @@
 package core;
 
 import java.io.PrintWriter;
-import java.util.Random;
+
+import ec.util.MersenneTwisterFast;
 
 public class Field {
 	private boolean[][] field;
@@ -53,7 +54,7 @@ public class Field {
 			throw new RuntimeException();
 		}
 		field = new boolean[size][size];
-		final Random rand = Constants.rand;
+		final MersenneTwisterFast rand = Constants.rand;
 		for (int i = 0; i < food; ++i) {
 			int row = rand.nextInt(size);
 			int column = rand.nextInt(size);
@@ -70,7 +71,7 @@ public class Field {
 		int lastSuccessfulMove = 0;
 		int currentState = auto.getStartState();
 		Direction currentDir = Constants.START_DIRECTION;
-		boolean[][] left = field.clone();
+		boolean[][] left = Constants.clone(field);
 		Cell currentCell = new Cell(Constants.START_ROW, Constants.START_COLUMN);
 		if (has(left, currentCell)) {
 			left[currentCell.row][currentCell.column] = false;
