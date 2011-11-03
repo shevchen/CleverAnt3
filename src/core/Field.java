@@ -48,27 +48,19 @@ public class Field {
 		return result;
 	}
 
-	public Field(int food) {
+	public Field() {
 		final int size = Constants.FIELD_SIZE;
-		if (food > size * size || food < 0) {
-			throw new RuntimeException();
-		}
 		field = new boolean[size][size];
 		final MersenneTwisterFast rand = Constants.rand;
-		for (int i = 0; i < food; ++i) {
-			int row = rand.nextInt(size);
-			int column = rand.nextInt(size);
-			while (field[row][column]) {
-				row = rand.nextInt(size);
-				column = rand.nextInt(size);
+		for (int i = 0; i < size; ++i) {
+			for (int j = 0; j < size; ++j) {
+				field[i][j] = rand.nextDouble() <= Constants.FOOD_PROBABILITY;
 			}
-			field[row][column] = true;
 		}
 	}
 
-	public SimulationResult simulate(final MooreMachine auto) {
+	public int simulate(final MooreMachine auto) {
 		int eaten = 0;
-		int lastSuccessfulMove = 0;
 		int currentState = auto.getStartState();
 		Direction currentDir = Constants.START_DIRECTION;
 		boolean[][] left = Constants.clone(field);
@@ -89,7 +81,6 @@ public class Field {
 				if (left[currentCell.row][currentCell.column]) {
 					left[currentCell.row][currentCell.column] = false;
 					++eaten;
-					lastSuccessfulMove = i;
 				}
 			case ROTATELEFT:
 				currentDir = currentDir.rotateLeft();
@@ -97,7 +88,7 @@ public class Field {
 				currentDir = currentDir.rotateRight();
 			}
 		}
-		return new SimulationResult(auto, eaten, lastSuccessfulMove);
+		return eaten;
 	}
 
 	public void print(PrintWriter out) {
