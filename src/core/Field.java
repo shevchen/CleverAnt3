@@ -42,7 +42,7 @@ public class Field {
 		int result = 0;
 		for (int i = 0; i < vis; ++i) {
 			if (((signMask >> i) & 1) == 1) {
-				result |= (((fullMask >> i) & 1) << (1 << (currentBit++)));
+				result |= ((fullMask >> i) & 1) << (currentBit++);
 			}
 		}
 		return result;
@@ -66,7 +66,7 @@ public class Field {
 		}
 	}
 
-	public SimulationResult simulate(MooreMachine auto) {
+	public SimulationResult simulate(final MooreMachine auto) {
 		int eaten = 0;
 		int lastSuccessfulMove = 0;
 		int currentState = auto.getStartState();
@@ -97,7 +97,7 @@ public class Field {
 				currentDir = currentDir.rotateRight();
 			}
 		}
-		return new SimulationResult(eaten, lastSuccessfulMove);
+		return new SimulationResult(auto, eaten, lastSuccessfulMove);
 	}
 
 	public void print(PrintWriter out) {
