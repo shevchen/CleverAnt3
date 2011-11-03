@@ -87,25 +87,21 @@ public class AutomataChanger {
 	}
 
 	public static MooreMachine mutate(MooreMachine m) {
-		double sum = 0.;
-		double currentProb = Constants.rand.nextDouble();
-		sum += Constants.NEXT_STATE_MUTATION_PROB;
-		if (currentProb <= sum) {
-			return nextStateMutation(m);
+		MooreMachine result = m.clone();
+		Random rand = Constants.rand;
+		if (rand.nextDouble() <= Constants.NEXT_STATE_MUTATION_PROB) {
+			result = nextStateMutation(result);
 		}
-		sum += Constants.ACTION_MUTATION_PROB;
-		if (currentProb <= sum) {
-			return actionMutation(m);
+		if (rand.nextDouble() <= Constants.ACTION_MUTATION_PROB) {
+			result = actionMutation(result);
 		}
-		sum += Constants.SIGNIFICANT_INPUT_MUTATION_PROB;
-		if (currentProb <= sum) {
-			return significantInputMutation(m);
+		if (rand.nextDouble() <= Constants.SIGNIFICANT_INPUT_MUTATION_PROB) {
+			result = significantInputMutation(result);
 		}
-		sum += Constants.START_STATE_MUTATION_PROB;
-		if (currentProb <= sum) {
-			return startStateMutation(m);
+		if (rand.nextDouble() <= Constants.START_STATE_MUTATION_PROB) {
+			result = startStateMutation(result);
 		}
-		return m.clone();
+		return result;
 	}
 
 	public static MooreMachine crossover(MooreMachine m1, MooreMachine m2) {
