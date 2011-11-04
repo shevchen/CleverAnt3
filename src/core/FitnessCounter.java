@@ -1,7 +1,4 @@
-package main;
-
-import core.Field;
-import core.MooreMachine;
+package core;
 
 public class FitnessCounter {
 	public static int[] getFitness(MooreMachine[] generation, Field f) {

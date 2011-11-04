@@ -5,11 +5,10 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.Arrays;
 
-import core.AutomataChanger;
 import core.Constants;
 import core.Field;
+import core.FitnessCounter;
 import core.MooreMachine;
-import core.MooreMachineGenerator;
 import core.SimulationResult;
 import ec.util.MersenneTwisterFast;
 
@@ -19,20 +18,19 @@ public class Main {
 		final int size = Constants.GENERATION_SIZE;
 		MooreMachine[] best = new MooreMachine[size];
 		for (int i = 0; i < size; ++i) {
-			best[i] = MooreMachineGenerator.generate();
+			best[i] = new MooreMachine();
 		}
 		final MersenneTwisterFast rand = Constants.rand;
 		for (int i = 0; i < Constants.ITERATIONS; ++i) {
 			MooreMachine[] candidates = new MooreMachine[3 * size];
 			for (int j = 0; j < size; ++j) {
 				candidates[j] = best[j];
-				candidates[size + j] = AutomataChanger.mutate(best[j]);
+				candidates[size + j] = best[j].mutate();
 				int other = rand.nextInt(size);
 				while (other == j) {
 					other = rand.nextInt(size);
 				}
-				candidates[2 * size + j] = AutomataChanger.crossover(best[j],
-						best[other]);
+				candidates[2 * size + j] = best[j].crossover(best[other]);
 			}
 			int[] sum = new int[3 * size];
 			for (int j = 0; j < Constants.FIELDS_IN_GENERATION; ++j) {

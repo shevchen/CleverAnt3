@@ -5,11 +5,11 @@ import java.util.Comparator;
 import ec.util.MersenneTwisterFast;
 
 public class Constants {
-	public static final int STATES_NUMBER = 7;
-	public static final int SIGNIFICANT_INPUTS = 2;
+	public static final int STATES_NUMBER = 9;
+	public static final int SIGNIFICANT_INPUTS = 3;
 	public static final int FIELD_SIZE = 32;
-	public static final int GENERATION_SIZE = 100;
-	public static final int FIELDS_IN_GENERATION = 100;
+	public static final int GENERATION_SIZE = 50;
+	public static final int FIELDS_IN_GENERATION = 50;
 	public static final int ITERATIONS = 10000;
 	public static final int TURNS_NUMBER = 200;
 	public static final int START_ROW = 0;
@@ -24,7 +24,7 @@ public class Constants {
 
 	public static final MersenneTwisterFast rand = new MersenneTwisterFast(
 			System.nanoTime());
-	
+
 	public static final Comparator<SimulationResult> simulationResultComparator = new Comparator<SimulationResult>() {
 		@Override
 		public int compare(SimulationResult arg0, SimulationResult arg1) {
