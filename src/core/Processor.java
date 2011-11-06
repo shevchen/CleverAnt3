@@ -56,7 +56,8 @@ public class Processor {
 		}
 		meanPart /= size;
 		double bestPart = previous[0].eatenPartsSum / previous[0].fieldsTested;
-		System.err.printf(Locale.US, "%7.3f%7.3f", bestPart, meanPart);
+		System.err.printf(Locale.US, "%7.3f/%03d%7.3f", bestPart,
+				(previous[0].fieldsTested / 50), meanPart);
 		System.err.println();
 	}
 
@@ -67,6 +68,7 @@ public class Processor {
 			best[i] = new SimulationResult(new MooreMachine(), 0., 0);
 		}
 		for (int i = 0; i < Constants.ITERATIONS; ++i) {
+			System.err.printf("%6d: ", i + 1);
 			updateGeneration(best);
 		}
 	}
