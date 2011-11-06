@@ -57,7 +57,8 @@ public class Processor {
 		meanPart /= size;
 		double bestPart = previous[0].eatenPartsSum / previous[0].fieldsTested;
 		System.err.printf(Locale.US, "%7.3f/%03d%7.3f", bestPart,
-				(previous[0].fieldsTested / 50), meanPart);
+				(previous[0].fieldsTested / Constants.FIELDS_IN_GENERATION),
+				meanPart);
 		System.err.println();
 	}
 

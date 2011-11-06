@@ -6,8 +6,8 @@ public class Constants {
 	public static final int STATES_NUMBER = 10;
 	public static final int SIGNIFICANT_INPUTS = 4;
 	public static final int FIELD_SIZE = 32;
-	public static final int GENERATION_SIZE = 50;
-	public static final int FIELDS_IN_GENERATION = 50;
+	public static final int GENERATION_SIZE = 100;
+	public static final int FIELDS_IN_GENERATION = 100;
 	public static final int NEW_FIELDS_IN_GENERATION = 1;
 	public static final int ITERATIONS = 100000;
 	public static final int TURNS_NUMBER = 200;
