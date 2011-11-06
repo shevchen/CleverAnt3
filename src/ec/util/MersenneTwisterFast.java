@@ -178,19 +178,19 @@ import java.io.*;
 public strictfp class MersenneTwisterFast implements Serializable, Cloneable {
 	// Serialization
 	private static final long serialVersionUID = -8219700664442619525L; // locked
-																		// as of
-																		// Version
-																		// 15
+	// as of
+	// Version
+	// 15
 
 	// Period parameters
 	private static final int N = 624;
 	private static final int M = 397;
 	private static final int MATRIX_A = 0x9908b0df; // private static final *
-													// constant vector a
+	// constant vector a
 	private static final int UPPER_MASK = 0x80000000; // most significant w-r
-														// bits
+	// bits
 	private static final int LOWER_MASK = 0x7fffffff; // least significant r
-														// bits
+	// bits
 
 	// Tempering parameters
 	private static final int TEMPERING_MASK_B = 0x9d2c5680;
@@ -890,7 +890,7 @@ public strictfp class MersenneTwisterFast implements Serializable, Cloneable {
 					int kk;
 					final int[] mt = this.mt; // locals are slightly faster
 					final int[] mag01 = this.mag01; // locals are slightly
-													// faster
+					// faster
 
 					for (kk = 0; kk < N - M; kk++) {
 						y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
@@ -917,7 +917,7 @@ public strictfp class MersenneTwisterFast implements Serializable, Cloneable {
 					int kk;
 					final int[] mt = this.mt; // locals are slightly faster
 					final int[] mag01 = this.mag01; // locals are slightly
-													// faster
+					// faster
 
 					for (kk = 0; kk < N - M; kk++) {
 						z = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
@@ -944,7 +944,7 @@ public strictfp class MersenneTwisterFast implements Serializable, Cloneable {
 					int kk;
 					final int[] mt = this.mt; // locals are slightly faster
 					final int[] mag01 = this.mag01; // locals are slightly
-													// faster
+					// faster
 
 					for (kk = 0; kk < N - M; kk++) {
 						a = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
@@ -971,7 +971,7 @@ public strictfp class MersenneTwisterFast implements Serializable, Cloneable {
 					int kk;
 					final int[] mt = this.mt; // locals are slightly faster
 					final int[] mag01 = this.mag01; // locals are slightly
-													// faster
+					// faster
 
 					for (kk = 0; kk < N - M; kk++) {
 						b = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);

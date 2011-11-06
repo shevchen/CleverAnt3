@@ -11,6 +11,8 @@ import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYDotRenderer;
 import org.jfree.data.xy.DefaultXYDataset;
 
+import core.Processor;
+
 public class Main {
 	public static void main(String[] args) throws InterruptedException {
 		Thread mainThread = new Thread(new Runnable() {
