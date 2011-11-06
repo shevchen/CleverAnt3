@@ -101,7 +101,7 @@ public class MooreMachine implements Cloneable {
 		return new MooreMachine(startState, significantMask, nextState, moves);
 	}
 
-	private MooreMachine nextStateMutation() {
+	public MooreMachine nextStateMutation() {
 		final int states = Constants.STATES_NUMBER;
 		final int masks = (1 << Constants.SIGNIFICANT_INPUTS);
 		final MersenneTwisterFast rand = Constants.rand;
@@ -117,7 +117,7 @@ public class MooreMachine implements Cloneable {
 				nextState, this.moves);
 	}
 
-	private MooreMachine actionMutation() {
+	public MooreMachine actionMutation() {
 		final int states = Constants.STATES_NUMBER;
 		final MersenneTwisterFast rand = Constants.rand;
 		int mutatedState = rand.nextInt(states);
@@ -132,7 +132,7 @@ public class MooreMachine implements Cloneable {
 				this.nextState, moves);
 	}
 
-	private MooreMachine significantInputMutation() {
+	public MooreMachine significantInputMutation() {
 		final int vis = Constants.VISIBLE_CELLS;
 		final MersenneTwisterFast rand = Constants.rand;
 		int wasSignificantMask = this.significantMask;
@@ -152,7 +152,7 @@ public class MooreMachine implements Cloneable {
 				this.nextState, this.moves);
 	}
 
-	private MooreMachine startStateMutation() {
+	public MooreMachine startStateMutation() {
 		final int states = Constants.STATES_NUMBER;
 		final MersenneTwisterFast rand = Constants.rand;
 		int wasStart = this.startState;
@@ -164,24 +164,6 @@ public class MooreMachine implements Cloneable {
 				this.nextState, this.moves);
 	}
 
-	public MooreMachine mutate() {
-		MooreMachine result = this.clone();
-		MersenneTwisterFast rand = Constants.rand;
-		if (rand.nextDouble() <= Constants.NEXT_STATE_MUTATION_PROB) {
-			result = result.nextStateMutation();
-		}
-		if (rand.nextDouble() <= Constants.ACTION_MUTATION_PROB) {
-			result = result.actionMutation();
-		}
-		if (rand.nextDouble() <= Constants.SIGNIFICANT_INPUT_MUTATION_PROB) {
-			result = result.significantInputMutation();
-		}
-		if (rand.nextDouble() <= Constants.START_STATE_MUTATION_PROB) {
-			result = result.startStateMutation();
-		}
-		return result;
-	}
-	
 	private String getBitString(int mask, int length) {
 		char[] ans = new char[length];
 		for (int i = 0; i < length; ++i) {

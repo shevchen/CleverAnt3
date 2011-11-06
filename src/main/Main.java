@@ -1,55 +1,64 @@
 package main;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.util.Arrays;
+import javax.swing.BoxLayout;
+import javax.swing.JFrame;
 
-import core.Constants;
-import core.Field;
-import core.FitnessCounter;
-import core.MooreMachine;
-import core.SimulationResult;
-import ec.util.MersenneTwisterFast;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.XYDotRenderer;
+import org.jfree.data.xy.DefaultXYDataset;
 
 public class Main {
-	public static void main(String[] args) throws FileNotFoundException {
-		PrintWriter out = new PrintWriter(new File("test.txt"));
-		final int size = Constants.GENERATION_SIZE;
-		MooreMachine[] best = new MooreMachine[size];
-		for (int i = 0; i < size; ++i) {
-			best[i] = new MooreMachine();
-		}
-		final MersenneTwisterFast rand = Constants.rand;
-		for (int i = 0; i < Constants.ITERATIONS; ++i) {
-			MooreMachine[] candidates = new MooreMachine[3 * size];
-			for (int j = 0; j < size; ++j) {
-				candidates[j] = best[j];
-				candidates[size + j] = best[j].mutate();
-				int other = rand.nextInt(size);
-				while (other == j) {
-					other = rand.nextInt(size);
-				}
-				candidates[2 * size + j] = best[j].crossover(best[other]);
+	public static void main(String[] args) throws InterruptedException {
+		Thread mainThread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				Processor.process();
 			}
-			int[] sum = new int[3 * size];
-			for (int j = 0; j < Constants.FIELDS_IN_GENERATION; ++j) {
-				int[] cur = FitnessCounter.getFitness(candidates, new Field());
-				for (int k = 0; k < 3 * size; ++k) {
-					sum[k] += cur[k];
-				}
+		});
+		Thread guiThread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				DefaultXYDataset data = new DefaultXYDataset();
+				data.addSeries("abc",
+						new double[][] { { 0, 1, 2 }, { 6, 4, 9 } });
+				data.addSeries("def",
+						new double[][] { { 0, 1, 2 }, { 6, 4, 9 } });
+				JFreeChart chart = ChartFactory
+						.createXYLineChart("title", "x", "y", data,
+								PlotOrientation.VERTICAL, true, false, false);
+
+				ChartPanel panel = new ChartPanel(chart);
+
+				DefaultXYDataset data2 = new DefaultXYDataset();
+				data2.addSeries("abc", new double[][] { { 0, 1, 2 },
+						{ 6, 4, 1 } });
+				JFreeChart chart2 = ChartFactory.createXYLineChart("title2",
+						"x2", "y2", data2, PlotOrientation.VERTICAL, true,
+						false, false);
+				XYPlot plot = chart2.getXYPlot();
+				XYDotRenderer ren = new XYDotRenderer();
+				ren.setDotHeight(3);
+				ren.setDotWidth(3);
+				plot.setRenderer(ren);
+				ChartPanel panel2 = new ChartPanel(chart2);
+
+				JFrame frame = new JFrame();
+				frame.getContentPane()
+						.setLayout(
+								new BoxLayout(frame.getContentPane(),
+										BoxLayout.Y_AXIS));
+				frame.add(panel);
+				frame.add(panel2);
+				frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+				frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				frame.setVisible(true);
 			}
-			SimulationResult[] result = new SimulationResult[3 * size];
-			for (int j = 0; j < 3 * size; ++j) {
-				result[j] = new SimulationResult(candidates[j], sum[j]);
-			}
-			Arrays.sort(result, Constants.simulationResultComparator);
-			for (int j = 0; j < size; ++j) {
-				candidates[j] = result[j].auto;
-			}
-			System.err
-					.println((int) (result[0].eaten * 1.0 / Constants.FIELDS_IN_GENERATION));
-		}
-		out.close();
+		});
+		mainThread.start();
+		guiThread.start();
 	}
 }

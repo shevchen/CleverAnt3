@@ -6,6 +6,7 @@ import ec.util.MersenneTwisterFast;
 
 public class Field {
 	private boolean[][] field;
+	private int totalFood;
 
 	private boolean has(boolean[][] left, Cell cell) {
 		return left[cell.row][cell.column];
@@ -52,11 +53,19 @@ public class Field {
 		final int size = Constants.FIELD_SIZE;
 		field = new boolean[size][size];
 		final MersenneTwisterFast rand = Constants.rand;
+		totalFood = 0;
 		for (int i = 0; i < size; ++i) {
 			for (int j = 0; j < size; ++j) {
 				field[i][j] = rand.nextDouble() <= Constants.FOOD_PROBABILITY;
+				if (field[i][j]) {
+					++totalFood;
+				}
 			}
 		}
+	}
+
+	public int getTotalFood() {
+		return totalFood;
 	}
 
 	public int simulate(final MooreMachine auto) {

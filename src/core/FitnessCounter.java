@@ -1,12 +1,14 @@
 package core;
 
+import java.util.ArrayList;
+
 public class FitnessCounter {
-	public static int[] getFitness(MooreMachine[] generation, Field f) {
-		int len = generation.length;
-		int[] result = new int[len];
-		for (int i = 0; i < len; ++i) {
-			result[i] = f.simulate(generation[i]);
+	public static void updateFitness(ArrayList<SimulationResult> generation,
+			Field f) {
+		for (int i = 0; i < generation.size(); ++i) {
+			SimulationResult sr = generation.get(i);
+			sr.eatenPartsSum += 1. * f.simulate(sr.auto) / f.getTotalFood();
+			sr.fieldsTested++;
 		}
-		return result;
 	}
 }

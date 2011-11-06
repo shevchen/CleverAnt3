@@ -1,11 +1,20 @@
 package core;
 
-public class SimulationResult {
+public class SimulationResult implements Comparable<SimulationResult> {
 	public MooreMachine auto;
-	public int eaten;
-	
-	public SimulationResult(MooreMachine auto, int eaten) {
+	public double eatenPartsSum;
+	public int fieldsTested;
+
+	public SimulationResult(MooreMachine auto, double eatenPartsSum,
+			int fieldsTested) {
 		this.auto = auto;
-		this.eaten = eaten;
+		this.eatenPartsSum = eatenPartsSum;
+		this.fieldsTested = fieldsTested;
+	}
+
+	@Override
+	public int compareTo(SimulationResult o) {
+		return Double.compare(o.eatenPartsSum / o.fieldsTested, eatenPartsSum
+				/ fieldsTested);
 	}
 }
