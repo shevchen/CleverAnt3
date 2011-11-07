@@ -2,7 +2,7 @@ package core;
 
 import java.io.PrintWriter;
 
-import ec.util.MersenneTwisterFast;
+import ec.util.MersenneTwister;
 
 public class MooreMachine implements Cloneable {
 	private int startState;
@@ -19,7 +19,7 @@ public class MooreMachine implements Cloneable {
 	}
 
 	public MooreMachine() {
-		final MersenneTwisterFast rand = Constants.rand;
+		final MersenneTwister rand = Constants.rand;
 		final int states = Constants.STATES_NUMBER;
 		startState = rand.nextInt(states);
 		significantMask = 0;
@@ -75,7 +75,7 @@ public class MooreMachine implements Cloneable {
 	}
 
 	public MooreMachine crossover(MooreMachine other) {
-		final MersenneTwisterFast rand = Constants.rand;
+		final MersenneTwister rand = Constants.rand;
 		int startState = rand.nextBoolean() ? this.startState
 				: other.startState;
 		int signMask1 = this.significantMask;
@@ -104,7 +104,7 @@ public class MooreMachine implements Cloneable {
 	public MooreMachine nextStateMutation() {
 		final int states = Constants.STATES_NUMBER;
 		final int masks = (1 << Constants.SIGNIFICANT_INPUTS);
-		final MersenneTwisterFast rand = Constants.rand;
+		final MersenneTwister rand = Constants.rand;
 		int mutatedState = rand.nextInt(states);
 		int mutatedMask = rand.nextInt(masks);
 		int[][] nextState = this.getNextStateArray();
@@ -119,7 +119,7 @@ public class MooreMachine implements Cloneable {
 
 	public MooreMachine actionMutation() {
 		final int states = Constants.STATES_NUMBER;
-		final MersenneTwisterFast rand = Constants.rand;
+		final MersenneTwister rand = Constants.rand;
 		int mutatedState = rand.nextInt(states);
 		Turn[] moves = this.getMovesArray();
 		Turn[] values = Turn.values();
@@ -134,7 +134,7 @@ public class MooreMachine implements Cloneable {
 
 	public MooreMachine significantInputMutation() {
 		final int vis = Constants.VISIBLE_CELLS;
-		final MersenneTwisterFast rand = Constants.rand;
+		final MersenneTwister rand = Constants.rand;
 		int wasSignificantMask = this.significantMask;
 		if (Integer.bitCount(wasSignificantMask) == vis) {
 			return this.clone();
@@ -154,7 +154,7 @@ public class MooreMachine implements Cloneable {
 
 	public MooreMachine startStateMutation() {
 		final int states = Constants.STATES_NUMBER;
-		final MersenneTwisterFast rand = Constants.rand;
+		final MersenneTwister rand = Constants.rand;
 		int wasStart = this.startState;
 		int startState = rand.nextInt(states);
 		while (wasStart == startState) {

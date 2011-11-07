@@ -2,7 +2,7 @@ package core;
 
 import java.io.PrintWriter;
 
-import ec.util.MersenneTwisterFast;
+import ec.util.MersenneTwister;
 
 public class Field {
 	private boolean[][] field;
@@ -61,7 +61,7 @@ public class Field {
 	public Field() {
 		final int size = Constants.FIELD_SIZE;
 		field = new boolean[size][size];
-		final MersenneTwisterFast rand = Constants.rand;
+		final MersenneTwister rand = Constants.rand;
 		totalFood = 0;
 		for (int i = 0; i < size; ++i) {
 			for (int j = 0; j < size; ++j) {

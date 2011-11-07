@@ -1,6 +1,6 @@
 package core;
 
-import ec.util.MersenneTwisterFast;
+import ec.util.MersenneTwister;
 
 public class Constants {
 	public static final int STATES_NUMBER = 10;
@@ -21,8 +21,8 @@ public class Constants {
 	public static final double SIGNIFICANT_INPUT_MUTATION_PROB = 0.2;
 	public static final double START_STATE_MUTATION_PROB = 0.2;
 
-	public static final MersenneTwisterFast rand = new MersenneTwisterFast(
-			System.nanoTime());
+	public static final MersenneTwister rand = new MersenneTwister(System
+			.nanoTime());
 
 	public static int[][] clone(int[][] source) {
 		int[][] ans = new int[source.length][];

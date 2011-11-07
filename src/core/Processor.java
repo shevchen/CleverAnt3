@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
 
-import ec.util.MersenneTwisterFast;
+import ec.util.MersenneTwister;
 
 public class Processor {
 	private static void updateGeneration(SimulationResult[] previous) {
 		final int size = previous.length;
-		final MersenneTwisterFast rand = Constants.rand;
+		final MersenneTwister rand = Constants.rand;
 		final int states = Constants.STATES_NUMBER;
 		ArrayList<SimulationResult> candidates = new ArrayList<SimulationResult>();
 		for (int j = 0; j < Constants.NEW_FIELDS_IN_GENERATION; ++j) {
