@@ -117,13 +117,15 @@ public class MooreMachine implements Cloneable {
 						}
 					}
 				}
+				int weight1 = 1 << Integer.bitCount(detMask1);
+				int weight2 = 1 << Integer.bitCount(detMask2);
 				int[] votes = new int[states];
 				for (int mask = 0; mask < (1 << sign); ++mask) {
 					if ((mask & detMask1) == mask1) {
-						votes[this.nextState[i][mask]]++;
+						votes[this.nextState[i][mask]] += weight1;
 					}
 					if ((mask & detMask2) == mask2) {
-						votes[other.nextState[i][mask]]++;
+						votes[other.nextState[i][mask]] += weight2;
 					}
 				}
 				int maxScore = -1, leaders = 0;
