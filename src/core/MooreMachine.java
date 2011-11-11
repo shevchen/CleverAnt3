@@ -14,24 +14,24 @@ public class MooreMachine implements Cloneable {
 			int[][] nextState, Turn[] moves) {
 		this.startState = startState;
 		this.significantMask = significantMask;
-		this.nextState = Constants.clone(nextState);
+		this.nextState = Utils.clone(nextState);
 		this.moves = moves.clone();
 	}
 
 	public MooreMachine() {
-		final MersenneTwister rand = Constants.rand;
-		final int states = Constants.STATES_NUMBER;
+		final MersenneTwister rand = Values.rand;
+		final int states = Values.STATES_NUMBER;
 		startState = rand.nextInt(states);
 		significantMask = 0;
-		final int vis = Constants.VISIBLE_CELLS;
-		for (int i = 0; i < Constants.SIGNIFICANT_INPUTS; ++i) {
+		final int vis = Values.VISIBLE_CELLS;
+		for (int i = 0; i < Values.SIGNIFICANT_INPUTS; ++i) {
 			int currentBit = rand.nextInt(vis);
 			while (((significantMask >> currentBit) & 1) == 1) {
 				currentBit = rand.nextInt(vis);
 			}
 			significantMask |= (1 << currentBit);
 		}
-		final int sign = Constants.SIGNIFICANT_INPUTS;
+		final int sign = Values.SIGNIFICANT_INPUTS;
 		nextState = new int[states][1 << sign];
 		for (int i = 0; i < states; ++i) {
 			for (int j = 0; j < (1 << sign); ++j) {
@@ -67,7 +67,7 @@ public class MooreMachine implements Cloneable {
 	}
 
 	public int[][] getNextStateArray() {
-		return Constants.clone(nextState);
+		return Utils.clone(nextState);
 	}
 
 	public Turn[] getMovesArray() {
@@ -75,36 +75,87 @@ public class MooreMachine implements Cloneable {
 	}
 
 	public MooreMachine crossover(MooreMachine other) {
-		final MersenneTwister rand = Constants.rand;
+		final MersenneTwister rand = Values.rand;
 		int startState = rand.nextBoolean() ? this.startState
 				: other.startState;
 		int signMask1 = this.significantMask;
 		int signMask2 = other.significantMask;
 		int significantMask = signMask1 & signMask2;
-		final int sign = Constants.SIGNIFICANT_INPUTS;
+		final int sign = Values.SIGNIFICANT_INPUTS;
+		final int vis = Values.VISIBLE_CELLS;
 		while (Integer.bitCount(significantMask) < sign) {
-			int position = rand.nextInt(Constants.VISIBLE_CELLS);
+			int position = rand.nextInt(vis);
 			significantMask |= (signMask1 | signMask2) & (1 << position);
 		}
-		int[][] nextState = this.getNextStateArray();
-		final int states = Constants.STATES_NUMBER;
+		final int states = Values.STATES_NUMBER;
+		int[][] newNextState = new int[states][1 << sign];
 		for (int i = 0; i < states; ++i) {
-			int threshold = rand.nextInt((1 << sign) + 1);
-			for (int j = threshold; j < (1 << sign); ++j) {
-				nextState[i][j] = other.nextState[i][j];
+			for (int j = 0; j < (1 << sign); ++j) {
+				int pos = 0;
+				int pos1 = 0, pos2 = 0;
+				int mask1 = 0, mask2 = 0;
+				int detMask1 = 0, detMask2 = 0;
+				for (int k = 0; k < vis; ++k) {
+					if (((significantMask >> k) & 1) == 1) {
+						if (((signMask1 >> k) & 1) == 1) {
+							detMask1 |= 1 << pos1;
+							mask1 |= ((j >> pos) & 1) << pos1;
+							++pos1;
+						}
+						if (((signMask2 >> k) & 1) == 1) {
+							detMask2 |= 1 << pos2;
+							mask2 |= ((j >> pos) & 1) << pos2;
+							++pos2;
+						}
+						++pos;
+					} else {
+						if (((signMask1 >> k) & 1) == 1) {
+							++pos1;
+						}
+						if (((signMask2 >> k) & 1) == 1) {
+							++pos2;
+						}
+					}
+				}
+				int[] votes = new int[states];
+				for (int mask = 0; mask < (1 << sign); ++mask) {
+					if ((mask & detMask1) == mask1) {
+						votes[this.nextState[i][mask]]++;
+					}
+					if ((mask & detMask2) == mask2) {
+						votes[other.nextState[i][mask]]++;
+					}
+				}
+				int maxScore = -1, leaders = 0;
+				for (int k = 0; k < states; ++k) {
+					if (votes[k] > maxScore) {
+						maxScore = votes[k];
+						leaders = 1;
+					} else if (votes[k] == maxScore) {
+						++leaders;
+					}
+				}
+				int result = rand.nextInt(leaders);
+				for (int k = states - 1; k >= 0; --k) {
+					if (votes[k] == maxScore && (--leaders) == result) {
+						newNextState[i][j] = k;
+						break;
+					}
+				}
 			}
 		}
 		Turn[] moves = new Turn[states];
 		for (int i = 0; i < states; ++i) {
 			moves[i] = rand.nextBoolean() ? this.moves[i] : other.moves[i];
 		}
-		return new MooreMachine(startState, significantMask, nextState, moves);
+		return new MooreMachine(startState, significantMask, newNextState,
+				moves);
 	}
 
 	public MooreMachine nextStateMutation() {
-		final int states = Constants.STATES_NUMBER;
-		final int masks = (1 << Constants.SIGNIFICANT_INPUTS);
-		final MersenneTwister rand = Constants.rand;
+		final int states = Values.STATES_NUMBER;
+		final int masks = (1 << Values.SIGNIFICANT_INPUTS);
+		final MersenneTwister rand = Values.rand;
 		int mutatedState = rand.nextInt(states);
 		int mutatedMask = rand.nextInt(masks);
 		int[][] nextState = this.getNextStateArray();
@@ -118,8 +169,8 @@ public class MooreMachine implements Cloneable {
 	}
 
 	public MooreMachine actionMutation() {
-		final int states = Constants.STATES_NUMBER;
-		final MersenneTwister rand = Constants.rand;
+		final int states = Values.STATES_NUMBER;
+		final MersenneTwister rand = Values.rand;
 		int mutatedState = rand.nextInt(states);
 		Turn[] moves = this.getMovesArray();
 		Turn[] values = Turn.values();
@@ -133,8 +184,8 @@ public class MooreMachine implements Cloneable {
 	}
 
 	public MooreMachine significantInputMutation() {
-		final int vis = Constants.VISIBLE_CELLS;
-		final MersenneTwister rand = Constants.rand;
+		final int vis = Values.VISIBLE_CELLS;
+		final MersenneTwister rand = Values.rand;
 		int wasSignificantMask = this.significantMask;
 		if (Integer.bitCount(wasSignificantMask) == vis) {
 			return this.clone();
@@ -153,8 +204,8 @@ public class MooreMachine implements Cloneable {
 	}
 
 	public MooreMachine startStateMutation() {
-		final int states = Constants.STATES_NUMBER;
-		final MersenneTwister rand = Constants.rand;
+		final int states = Values.STATES_NUMBER;
+		final MersenneTwister rand = Values.rand;
 		int wasStart = this.startState;
 		int startState = rand.nextInt(states);
 		while (wasStart == startState) {
@@ -175,14 +226,14 @@ public class MooreMachine implements Cloneable {
 	public void print(PrintWriter out) {
 		out.println("Start state = " + startState);
 		out.print("Significant inputs:");
-		final int vis = Constants.VISIBLE_CELLS;
+		final int vis = Values.VISIBLE_CELLS;
 		for (int i = 0; i < vis; ++i) {
 			if (((significantMask >> i) & 1) == 1) {
 				out.print(" " + i);
 			}
 		}
 		out.println();
-		final int states = Constants.STATES_NUMBER;
+		final int states = Values.STATES_NUMBER;
 		out.print("Moves:");
 		for (int i = 0; i < states; ++i) {
 			out.print(" " + moves[i]);
@@ -190,11 +241,11 @@ public class MooreMachine implements Cloneable {
 		out.println();
 		out.printf("%15s%15s%15s", "state", "inputs", "next state");
 		out.println();
-		final int sign = Constants.SIGNIFICANT_INPUTS;
+		final int sign = Values.SIGNIFICANT_INPUTS;
 		for (int i = 0; i < states; ++i) {
 			for (int j = 0; j < (1 << sign); ++j) {
 				out.printf("%15d%15s%15d", i, getBitString(j,
-						Constants.SIGNIFICANT_INPUTS), nextState[i][j]);
+						Values.SIGNIFICANT_INPUTS), nextState[i][j]);
 				out.println();
 			}
 		}
