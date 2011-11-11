@@ -2,13 +2,13 @@ package core;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Locale;
 
+import main.ResultSaver;
 import ec.util.MersenneTwister;
 
 public class Processor {
-	private static void updateGeneration(SimulationResult[] previous,
-			boolean debug) {
+	private void updateGeneration(int genNumber, SimulationResult[] previous,
+			ResultSaver rs) {
 		final int size = Values.GENERATION_SIZE;
 		final MersenneTwister rand = Values.rand;
 		final int states = Values.STATES_NUMBER;
@@ -54,15 +54,10 @@ public class Processor {
 		}
 		meanPart /= size;
 		double bestPart = previous[0].eatenPartsSum / previous[0].fieldsTested;
-		if (debug) {
-			System.out.printf(Locale.US, "%7.3f/%03d%7.3f", bestPart,
-					(previous[0].fieldsTested / Values.FIELDS_IN_GENERATION),
-					meanPart);
-			System.out.println();
-		}
+		rs.saveGeneration(genNumber, bestPart, meanPart);
 	}
 
-	public static void process(boolean debug) {
+	public void process() {
 		final double[] prob = Values.MUTATION_PROBABILITIES;
 		final int size = Values.GENERATION_SIZE;
 		for (int i = 0; i < 4; ++i) {
@@ -72,15 +67,18 @@ public class Processor {
 					probs[j] = (j == i) ? p : Values.DEFAULT_MUTATION_PROB;
 				}
 				Values.init(probs[0], probs[1], probs[2], probs[3]);
-				SimulationResult[] best = new SimulationResult[size];
-				for (int m = 0; m < size; ++m) {
-					best[m] = new SimulationResult(new MooreMachine(), 0., 0);
-				}
-				for (int m = 0; m < Values.ITERATIONS; ++m) {
-					if (debug) {
-						System.out.printf("%6d: ", m + 1);
+				for (int j = 0; j < Values.RUNNINGS; ++j) {
+					ResultSaver rs = new ResultSaver(probs);
+					SimulationResult[] best = new SimulationResult[size];
+					for (int m = 0; m < size; ++m) {
+						best[m] = new SimulationResult(new MooreMachine(), 0.,
+								0);
 					}
-					updateGeneration(best, debug);
+					for (int m = 0; m < Values.ITERATIONS; ++m) {
+						updateGeneration(m + 1, best, rs);
+					}
+					rs.saveAutomaton(best[0]);
+					rs.close();
 				}
 			}
 		}

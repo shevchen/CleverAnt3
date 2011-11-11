@@ -14,12 +14,13 @@ import org.jfree.chart.ChartPanel;
 
 import core.Processor;
 
-public class Main {
+public class Runner {
 	public static void main(String[] args) throws InterruptedException {
 		Thread mainThread = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				Processor.process(true);
+				Processor proc = new Processor();
+				proc.process();
 			}
 		});
 		Thread guiThread = new Thread(new Runnable() {
