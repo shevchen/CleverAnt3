@@ -14,12 +14,12 @@ public class Values {
 	public static final Direction START_DIRECTION = Direction.RIGHT;
 	static final int STATES_NUMBER = 10;
 	static final int SIGNIFICANT_INPUTS = 4;
-	static final int GENERATION_SIZE = 100;
+	static final int GENERATION_SIZE = 50;
 	static final double ELITE_PART = 0.3;
-	static final int FIELDS_IN_GENERATION = 100;
+	static final int FIELDS_IN_GENERATION = 50;
 	static final double FOOD_PROBABILITY = 0.05;
 	static final int VISIBLE_CELLS = 8;
-	static final int ITERATIONS = 10000;
+	static final int ITERATIONS = 3000;
 	static final int RUNNINGS = 5;
 	static final double DEFAULT_MUTATION_PROB = 0.12;
 	static final double[] MUTATION_PROBABILITIES = new double[] { 0.05, 0.1,
