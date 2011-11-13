@@ -47,6 +47,7 @@ public class ResultSaver {
 			PrintWriter outAuto = new PrintWriter(new File(curDir + "auto"));
 			outAuto.printf(Locale.US, "Eaten part = %.6f", sr.eatenPartsSum
 					/ sr.fieldsTested);
+			outAuto.println();
 			sr.auto.print(outAuto);
 			outAuto.close();
 		} catch (FileNotFoundException e) {
