@@ -14,22 +14,22 @@ public class ResultSaver {
 
 	public static final String RESULTS_DIR = "results";
 
-	public static String getIdentifier(Mutation m, double prob) {
+	public static String getIdentifier(double[] prob) {
 		String ident = "";
-		for (Mutation mut : Mutation.values()) {
-			if (mut.ordinal() > 0) {
+		for (Mutation m : Mutation.values()) {
+			if (m.ordinal() > 0) {
 				ident += "|";
 			}
-			ident += String.format("%.2f", m == mut ? prob : 0.);
+			ident += String.format("%.2f", prob[m.ordinal()]);
 		}
 		return ident;
 	}
 
-	public ResultSaver(Mutation m, double prob) {
+	public ResultSaver(double[] prob) {
 		long id = (System.currentTimeMillis() * Thread.currentThread()
 				.hashCode())
 				& Integer.MAX_VALUE;
-		curDir = RESULTS_DIR + "/" + getIdentifier(m, prob) + "/" + id + "/";
+		curDir = RESULTS_DIR + "/" + getIdentifier(prob) + "/" + id + "/";
 		try {
 			new File(curDir).mkdirs();
 			outGen = new PrintWriter(new File(curDir + "generations"));

@@ -26,8 +26,10 @@ public class Runner {
 				public void run() {
 					for (int i = 0; i < Constants.RUNNINGS_PER_THREAD; ++i) {
 						for (Mutation m : Mutation.values()) {
-							for (double prob : Constants.MUTATION_PROBABILITIES) {
-								Processor.run(m, prob);
+							for (double p : Constants.MUTATION_PROBABILITIES) {
+								double[] prob = new double[Mutation.values().length];
+								prob[m.ordinal()] = p;
+								Processor.run(prob);
 							}
 						}
 					}
