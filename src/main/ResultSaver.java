@@ -20,7 +20,7 @@ public class ResultSaver {
 		String name = "";
 		for (Mutation m : Mutation.values()) {
 			if (m.ordinal() > 0) {
-				name += "|";
+				name += ";";
 			}
 			name += String.format("%.2f", prob[m.ordinal()]);
 		}
