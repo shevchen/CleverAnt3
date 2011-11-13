@@ -25,7 +25,7 @@ public class Constants {
 	static final int VISIBLE_CELLS = 8;
 
 	public static final int THREADS = 2;
-	public static int RUNNINGS_PER_THREAD = 1;
+	public static int RUNNINGS_PER_THREAD = 5;
 
 	public static Paint[] DEFAULT_COLORS = new Paint[] { Color.RED,
 			Color.GREEN, Color.BLUE, Color.BLACK, Color.YELLOW, Color.CYAN,

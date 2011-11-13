@@ -60,9 +60,9 @@ public class ResultSaver {
 
 	public void saveGeneration(int genNumber, double best, double mean) {
 		outGen.println("Generation " + genNumber);
-		outGen.printf(Locale.US, "Max eaten part = %.6f", best);
+		outGen.printf(Locale.US, "%.6f = max eaten part", best);
 		outGen.println();
-		outGen.printf(Locale.US, "Mean eaten part = %.6f", mean);
+		outGen.printf(Locale.US, "%.6f = mean eaten part", mean);
 		outGen.println();
 		outGen.println();
 	}

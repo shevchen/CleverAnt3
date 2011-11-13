@@ -47,9 +47,6 @@ public class GraphPanel {
 		for (int i = 0; i < data.length; ++i) {
 			buff.readLine();
 			StringTokenizer st = new StringTokenizer(buff.readLine());
-			for (int j = 0; j < 4; ++j) {
-				st.nextToken();
-			}
 			data[i] += Double.parseDouble(st.nextToken());
 			buff.readLine();
 			buff.readLine();
@@ -62,9 +59,6 @@ public class GraphPanel {
 			buff.readLine();
 			buff.readLine();
 			StringTokenizer st = new StringTokenizer(buff.readLine());
-			for (int j = 0; j < 4; ++j) {
-				st.nextToken();
-			}
 			data[i] += Double.parseDouble(st.nextToken());
 			buff.readLine();
 		}
