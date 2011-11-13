@@ -9,9 +9,8 @@ import core.Mutation;
 import core.SimulationResult;
 
 public class ResultSaver {
-	private long startTime;
 	private PrintWriter outGen;
-	private String curDir;
+	private final String curDir;
 
 	public static final String RESULTS_DIR = "results";
 
@@ -27,12 +26,10 @@ public class ResultSaver {
 	}
 
 	public ResultSaver(Mutation m, double prob) {
-		startTime = System.currentTimeMillis() - 1;
-		do {
-			++startTime;
-			curDir = RESULTS_DIR + "/" + getIdentifier(m, prob) + "/"
-					+ startTime + "/";
-		} while (new File(curDir).exists());
+		long id = (System.currentTimeMillis() * Thread.currentThread()
+				.hashCode())
+				& Integer.MAX_VALUE;
+		curDir = RESULTS_DIR + "/" + getIdentifier(m, prob) + "/" + id + "/";
 		try {
 			new File(curDir).mkdirs();
 			outGen = new PrintWriter(new File(curDir + "generations"));
