@@ -3,84 +3,61 @@ package core;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import main.ResultSaver;
 import ec.util.MersenneTwister;
+import main.ResultSaver;
 
 public class Processor {
-	private void updateGeneration(int genNumber, SimulationResult[] previous,
-			ResultSaver rs) {
-		final int size = Values.GENERATION_SIZE;
-		final MersenneTwister rand = Values.rand;
-		final int states = Values.STATES_NUMBER;
-		final int elite = (int) (size * Values.ELITE_PART);
+	private static void updateGeneration(int genNumber,
+			SimulationResult[] best, ResultSaver rs, Mutation m, double prob) {
+		final int size = Constants.GENERATION_SIZE;
+		final MersenneTwister rand = Constants.rand;
+		final int elite = (int) (size * Constants.ELITE_PART);
 		ArrayList<SimulationResult> candidates = new ArrayList<SimulationResult>();
 		for (int i = 0; i < elite; ++i) {
-			candidates.add(previous[i]);
-			if (elite > 1) {
-				int other = rand.nextInt(elite);
-				while (other == i) {
-					other = rand.nextInt(elite);
-				}
-				candidates.add(new SimulationResult(previous[i].auto
-						.crossover(previous[other].auto), 0., 0));
-			}
+			candidates.add(best[i]);
 		}
 		for (int i = elite; i < size; ++i) {
-			MooreMachine current = previous[i].auto;
-			if (states > 1 && rand.nextDouble() <= Values.nextStateMutationProb) {
-				current = current.nextStateMutation();
+			MooreMachine current = best[i].auto;
+			if (rand.nextDouble() <= prob) {
+				current.mutate(m);
+				candidates.add(new SimulationResult(current, 0., 0));
+			} else {
+				candidates.add(best[i]);
 			}
-			if (rand.nextDouble() <= Values.actionMutationProb) {
-				current = current.actionMutation();
-			}
-			if (Values.SIGNIFICANT_INPUTS < Values.VISIBLE_CELLS
-					&& rand.nextDouble() <= Values.significantInputMutationProb) {
-				current = current.significantInputMutation();
-			}
-			if (states > 1
-					&& rand.nextDouble() <= Values.startStateMutationProb) {
-				current = current.startStateMutation();
-			}
-			candidates.add(new SimulationResult(current, 0., 0));
 		}
-		for (int i = 0; i < Values.FIELDS_IN_GENERATION; ++i) {
+		for (int i = 0; i < size; ++i) {
+			int other = rand.nextInt(size);
+			while (i == other) {
+				other = rand.nextInt(size);
+			}
+			candidates.add(new SimulationResult(best[i].auto
+					.crossover(best[other].auto), 0., 0));
+		}
+		for (int i = 0; i < Constants.FIELDS_IN_GENERATION; ++i) {
 			FitnessCounter.updateFitness(candidates, new Field());
 		}
 		Collections.sort(candidates);
 		double meanPart = 0.;
 		for (int i = 0; i < size; ++i) {
-			previous[i] = candidates.get(i);
-			meanPart += previous[i].eatenPartsSum / previous[i].fieldsTested;
+			best[i] = candidates.get(i);
+			meanPart += best[i].eatenPartsSum / best[i].fieldsTested;
 		}
 		meanPart /= size;
-		double bestPart = previous[0].eatenPartsSum / previous[0].fieldsTested;
+		double bestPart = best[0].eatenPartsSum / best[0].fieldsTested;
 		rs.saveGeneration(genNumber, bestPart, meanPart);
 	}
 
-	public void process() {
-		final double[] prob = Values.MUTATION_PROBABILITIES;
-		final int size = Values.GENERATION_SIZE;
-		for (int i = 0; i < 4; ++i) {
-			for (double p : prob) {
-				double[] probs = new double[4];
-				for (int j = 0; j < 4; ++j) {
-					probs[j] = (j == i) ? p : Values.DEFAULT_MUTATION_PROB;
-				}
-				Values.init(probs[0], probs[1], probs[2], probs[3]);
-				for (int j = 0; j < Values.RUNNINGS; ++j) {
-					ResultSaver rs = new ResultSaver(probs);
-					SimulationResult[] best = new SimulationResult[size];
-					for (int m = 0; m < size; ++m) {
-						best[m] = new SimulationResult(new MooreMachine(), 0.,
-								0);
-					}
-					for (int m = 0; m < Values.ITERATIONS; ++m) {
-						updateGeneration(m + 1, best, rs);
-					}
-					rs.saveAutomaton(best[0]);
-					rs.close();
-				}
-			}
+	public static void run(Mutation m, double prob) {
+		final int size = Constants.GENERATION_SIZE;
+		ResultSaver rs = new ResultSaver(m, prob);
+		SimulationResult[] best = new SimulationResult[size];
+		for (int j = 0; j < size; ++j) {
+			best[j] = new SimulationResult(new MooreMachine(), 0., 0);
 		}
+		for (int j = 0; j < Constants.ITERATIONS; ++j) {
+			updateGeneration(j + 1, best, rs, m, prob);
+		}
+		rs.saveAutomaton(best[0]);
+		rs.close();
 	}
 }

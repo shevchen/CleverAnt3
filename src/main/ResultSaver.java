@@ -5,26 +5,34 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.Locale;
 
+import core.Mutation;
 import core.SimulationResult;
 
 public class ResultSaver {
-	public static final String RESULTS_DIR = "results";
-
 	private long startTime;
 	private PrintWriter outGen;
 	private String curDir;
 
-	public ResultSaver(double[] prob) {
-		Locale.setDefault(Locale.US);
-		startTime = System.currentTimeMillis();
+	public static final String RESULTS_DIR = "results";
+
+	public static String getIdentifier(Mutation m, double prob) {
 		String ident = "";
-		for (int i = 0; i < prob.length; ++i) {
-			if (i > 0) {
+		for (Mutation mut : Mutation.values()) {
+			if (mut.ordinal() > 0) {
 				ident += "|";
 			}
-			ident += String.format("%4.2f", prob[i]);
+			ident += String.format("%.2f", m == mut ? prob : 0.);
 		}
-		curDir = RESULTS_DIR + "/" + ident + "/" + startTime + "/";
+		return ident;
+	}
+
+	public ResultSaver(Mutation m, double prob) {
+		startTime = System.currentTimeMillis() - 1;
+		do {
+			++startTime;
+			curDir = RESULTS_DIR + "/" + getIdentifier(m, prob) + "/"
+					+ startTime + "/";
+		} while (new File(curDir).exists());
 		try {
 			new File(curDir).mkdirs();
 			outGen = new PrintWriter(new File(curDir + "generations"));
@@ -40,8 +48,8 @@ public class ResultSaver {
 	public void saveAutomaton(SimulationResult sr) {
 		try {
 			PrintWriter outAuto = new PrintWriter(new File(curDir + "auto"));
-			outAuto.println("Eaten part = "
-					+ (sr.eatenPartsSum / sr.fieldsTested));
+			outAuto.printf(Locale.US, "Eaten part = %.6f", sr.eatenPartsSum
+					/ sr.fieldsTested);
 			sr.auto.print(outAuto);
 			outAuto.close();
 		} catch (FileNotFoundException e) {
@@ -51,8 +59,10 @@ public class ResultSaver {
 
 	public void saveGeneration(int genNumber, double best, double mean) {
 		outGen.println("Generation " + genNumber);
-		outGen.println("Max eaten part = " + best);
-		outGen.println("Mean eaten part = " + mean);
+		outGen.printf(Locale.US, "Max eaten part = %.6f", best);
+		outGen.println();
+		outGen.printf(Locale.US, "Mean eaten part = %.6f", mean);
+		outGen.println();
 		outGen.println();
 	}
 }

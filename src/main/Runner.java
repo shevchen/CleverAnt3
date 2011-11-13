@@ -12,17 +12,31 @@ import javax.swing.JFrame;
 
 import org.jfree.chart.ChartPanel;
 
+import core.Constants;
+import core.Mutation;
 import core.Processor;
 
 public class Runner {
 	public static void main(String[] args) throws InterruptedException {
-		Thread mainThread = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				Processor proc = new Processor();
-				proc.process();
-			}
-		});
+		final int thr = Constants.THREADS;
+		Thread[] proc = new Thread[thr];
+		for (int i = 0; i < thr; ++i) {
+			proc[i] = new Thread(new Runnable() {
+				@Override
+				public void run() {
+					for (int i = 0; i < Constants.RUNNINGS_PER_THREAD; ++i) {
+						for (Mutation m : Mutation.values()) {
+							for (double prob : Constants.MUTATION_PROBABILITIES) {
+								Processor.run(m, prob);
+							}
+						}
+					}
+				}
+			});
+		}
+		for (int i = 0; i < thr; ++i) {
+			proc[i].start();
+		}
 		Thread guiThread = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -45,7 +59,6 @@ public class Runner {
 				frame.setVisible(true);
 			}
 		});
-		mainThread.start();
-		guiThread.start();
+		// guiThread.start();
 	}
 }
