@@ -1,12 +1,14 @@
 package core;
 
+import java.awt.Color;
+import java.awt.Paint;
+
 import ec.util.MersenneTwister;
 
 public class Constants {
 	public static final MersenneTwister rand = new MersenneTwister(System
 			.nanoTime());
-	public static final int THREADS = 2;
-	public static int RUNNINGS_PER_THREAD = 5;
+	public static final int ITERATIONS = 150;
 	public static final int TURNS_NUMBER = 200;
 	public static final int FIELD_SIZE = 32;
 	public static final int START_ROW = 0;
@@ -21,6 +23,11 @@ public class Constants {
 	static final int FIELDS_IN_GENERATION = 50;
 	static final double FOOD_PROBABILITY = 0.05;
 	static final int VISIBLE_CELLS = 8;
-	static final int ITERATIONS = 3000;
 
+	public static final int THREADS = 2;
+	public static int RUNNINGS_PER_THREAD = 1;
+
+	public static Paint[] DEFAULT_COLORS = new Paint[] { Color.RED,
+			Color.GREEN, Color.BLUE, Color.BLACK, Color.YELLOW, Color.CYAN,
+			Color.GRAY, Color.MAGENTA };
 }

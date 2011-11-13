@@ -141,7 +141,7 @@ public class Field {
 		totalFood = 0;
 		for (int i = 0; i < size; ++i) {
 			for (int j = 0; j < size; ++j) {
-				field[i][j] = rand.nextDouble() <= Constants.FOOD_PROBABILITY;
+				field[i][j] = rand.nextDouble() < Constants.FOOD_PROBABILITY;
 				if (field[i][j]) {
 					++totalFood;
 				}
@@ -158,7 +158,9 @@ public class Field {
 		int currentState = auto.getStartState();
 		Direction currentDir = Constants.START_DIRECTION;
 		for (int i = 0; i < Constants.FIELD_SIZE; ++i) {
-			System.arraycopy(field[i], 0, fieldCopy[i], 0, Constants.FIELD_SIZE);
+			System
+					.arraycopy(field[i], 0, fieldCopy[i], 0,
+							Constants.FIELD_SIZE);
 		}
 		int curRow = Constants.START_ROW;
 		int curCol = Constants.START_COLUMN;
@@ -167,7 +169,7 @@ public class Field {
 			++eaten;
 		}
 		final int signMask = auto.getSignificantMask();
-		for (int i = 1; i <= Constants.TURNS_NUMBER; ++i) {
+		for (int i = 0; i < Constants.TURNS_NUMBER; ++i) {
 			int visibleMask = getVisibleMask(curRow, curCol, currentDir,
 					fieldCopy);
 			Turn action = auto.getMove(currentState);

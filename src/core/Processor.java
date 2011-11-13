@@ -27,7 +27,7 @@ public class Processor {
 		for (int i = elite; i < size; ++i) {
 			MooreMachine current = best[i].auto;
 			for (Mutation m : Mutation.values()) {
-				if (rand.nextDouble() <= prob[m.ordinal()]) {
+				if (rand.nextDouble() < prob[m.ordinal()]) {
 					current.mutate(m);
 				}
 			}
