@@ -12,10 +12,6 @@ public class ResultSaver {
 	private PrintWriter outGen;
 	private final String curDir;
 
-	public static final String RESULTS_DIR = "results";
-	public static final String AUTO_FILENAME = "auto";
-	public static final String GENERATIONS_FILENAME = "generations";
-
 	public static String getDirectoryName(double[] prob) {
 		String name = "";
 		for (Mutation m : Mutation.values()) {
@@ -27,14 +23,15 @@ public class ResultSaver {
 		return name;
 	}
 
-	public ResultSaver(double[] prob) {
+	public ResultSaver(double[] prob, final String dirName) {
 		long id = (System.currentTimeMillis() * Thread.currentThread()
 				.hashCode())
 				& Integer.MAX_VALUE;
-		curDir = RESULTS_DIR + "/" + getDirectoryName(prob) + "/" + id + "/";
+		curDir = dirName + "/" + id + "/";
 		try {
 			new File(curDir).mkdirs();
-			outGen = new PrintWriter(new File(curDir + GENERATIONS_FILENAME));
+			outGen = new PrintWriter(new File(curDir
+					+ Constants.GENERATIONS_FILENAME));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -47,7 +44,7 @@ public class ResultSaver {
 	public void saveAutomaton(SimulationResult sr) {
 		try {
 			PrintWriter outAuto = new PrintWriter(new File(curDir
-					+ AUTO_FILENAME));
+					+ Constants.AUTO_FILENAME));
 			outAuto.printf(Locale.US, "Eaten part = %.6f", sr.eatenPartsSum
 					/ sr.fieldsTested);
 			outAuto.println();

@@ -74,12 +74,12 @@ public class GraphPanel {
 		double[][] ordinates = new double[graphs][iter];
 		for (int pr = 0; pr < graphs; ++pr) {
 			prob[m.ordinal()] = probs[pr];
-			String dirName = ResultSaver.RESULTS_DIR + "/"
+			String dirName = Constants.RESULTS_DIR + "/"
 					+ ResultSaver.getDirectoryName(prob) + "/";
 			File[] list = new File(dirName).listFiles();
 			for (File f : list) {
 				File full = new File(dirName + f.getName() + "/"
-						+ ResultSaver.GENERATIONS_FILENAME);
+						+ Constants.GENERATIONS_FILENAME);
 				try {
 					BufferedReader buff = new BufferedReader(new FileReader(
 							full));

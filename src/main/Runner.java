@@ -16,7 +16,11 @@ public class Runner {
 							for (double p : Constants.MUTATION_PROBABILITIES) {
 								double[] prob = new double[Mutation.values().length];
 								prob[m.ordinal()] = p;
-								Processor.run(prob);
+								final String dirName = Constants.RESULTS_DIR
+										+ "/"
+										+ ResultSaver.getDirectoryName(prob);
+								Processor.run(prob, Constants.ITERATIONS,
+										dirName);
 							}
 						}
 					}

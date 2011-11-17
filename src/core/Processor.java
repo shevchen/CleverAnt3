@@ -48,14 +48,14 @@ public class Processor {
 		rs.saveGeneration(genNumber, bestPart, meanPart);
 	}
 
-	public static void run(double[] prob) {
+	public static void run(double[] prob, final int iterations, final String dirName) {
 		final int size = Constants.GENERATION_SIZE;
-		ResultSaver rs = new ResultSaver(prob);
+		ResultSaver rs = new ResultSaver(prob, dirName);
 		SimulationResult[] best = new SimulationResult[size];
 		for (int j = 0; j < size; ++j) {
 			best[j] = new SimulationResult(new MooreMachine(), 0., 0);
 		}
-		for (int j = 0; j < Constants.ITERATIONS; ++j) {
+		for (int j = 0; j < iterations; ++j) {
 			updateGeneration(j + 1, best, rs, prob);
 		}
 		rs.saveAutomaton(best[0]);
