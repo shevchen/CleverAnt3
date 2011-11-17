@@ -1,6 +1,5 @@
 package main;
 
-import core.Constants;
 import core.Mutation;
 import core.Processor;
 

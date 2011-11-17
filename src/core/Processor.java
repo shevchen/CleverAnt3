@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import ec.util.MersenneTwister;
+import main.Constants;
 import main.ResultSaver;
 
 public class Processor {
