@@ -21,11 +21,11 @@ public class Constants {
 	public static final int ITERATIONS = 150;
 	public static final int SEARCHER_ITERATIONS = 5000;
 
-	public static final double[] MUTATION_PROBABILITIES = new double[] { 0.01,
-			0.05, 0.1, 0.15, 0.2 };
+	public static final double[] MUTATION_PROBABILITIES = { 0.01, 0.05, 0.1,
+			0.15, 0.2 };
 
-	public static final double[] BEST_MUTATION_PROBABILITIES = new double[] {
-			0.15, 0.2, 0.2, 0.12 };
+	public static final double[] BEST_MUTATION_PROBABILITIES = { 0.15, 0.2,
+			0.2, 0.12 };
 
 	public static final MersenneTwister rand = new MersenneTwister(System
 			.nanoTime());
@@ -34,12 +34,13 @@ public class Constants {
 	public static final int RUNNINGS_PER_THREAD = 5;
 	public static final int SEARCHES_PER_THREAD = 5;
 
-	public static final Paint[] DEFAULT_COLORS = new Paint[] { Color.RED,
-			Color.GREEN, Color.BLUE, Color.BLACK, Color.YELLOW, Color.CYAN,
-			Color.GRAY, Color.MAGENTA };
+	public static final Paint[] DEFAULT_COLORS = { Color.RED, Color.GREEN,
+			Color.BLUE, Color.BLACK, Color.YELLOW, Color.CYAN, Color.GRAY,
+			Color.MAGENTA };
 
 	public static final String RESULTS_DIR = "results";
 	public static final String AUTO_FILENAME = "auto";
 	public static final String GENERATIONS_FILENAME = "generations";
 	public static final String BEST_AUTO_DIR = "bestauto";
+	public static final String FOOD_FILENAME = "aphid.jpg";
 }

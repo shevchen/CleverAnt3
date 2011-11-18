@@ -24,14 +24,14 @@ public class Processor {
 			while (i == other) {
 				other = rand.nextInt(size);
 			}
-			candidates.add(new SimulationResult(best[i].auto
-					.crossover(best[other].auto), 0., 0));
+			candidates.add(new SimulationResult(best[i].getAuto().crossover(
+					best[other].getAuto()), 0., 0));
 		}
 		for (int i = 0; i < elite; ++i) {
 			candidates.add(best[i]);
 		}
 		for (int i = elite; i < size; ++i) {
-			MooreMachine current = best[i].auto;
+			MooreMachine current = best[i].getAuto();
 			for (Mutation m : Mutation.values()) {
 				if (rand.nextDouble() < prob[m.ordinal()]) {
 					current.mutate(m);
@@ -46,10 +46,10 @@ public class Processor {
 		double meanPart = 0.;
 		for (int i = 0; i < size; ++i) {
 			best[i] = candidates.get(i);
-			meanPart += best[i].eatenPartsSum / best[i].fieldsTested;
+			meanPart += best[i].getMeanEatenPart();
 		}
 		meanPart /= size;
-		double bestPart = best[0].eatenPartsSum / best[0].fieldsTested;
+		double bestPart = best[0].getMeanEatenPart();
 		rs.saveGeneration(genNumber, bestPart, meanPart);
 	}
 

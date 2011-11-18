@@ -1,15 +1,31 @@
 package core;
 
 public class SimulationResult implements Comparable<SimulationResult> {
-	public MooreMachine auto;
-	public double eatenPartsSum;
-	public int fieldsTested;
+	private MooreMachine auto;
+	private double eatenPartsSum;
+	private int fieldsTested;
 
 	public SimulationResult(MooreMachine auto, double eatenPartsSum,
 			int fieldsTested) {
 		this.auto = auto;
 		this.eatenPartsSum = eatenPartsSum;
 		this.fieldsTested = fieldsTested;
+	}
+
+	public MooreMachine getAuto() {
+		return auto;
+	}
+
+	public void addPart(double part) {
+		eatenPartsSum += part;
+	}
+
+	public void addFields(int fields) {
+		fieldsTested += fields;
+	}
+
+	public double getMeanEatenPart() {
+		return eatenPartsSum / fieldsTested;
 	}
 
 	@Override

@@ -10,8 +10,8 @@ public class MooreMachine {
 	private int[][] nextState;
 	private Turn[] moves;
 
-	private MooreMachine(int startState, int significantMask,
-			int[][] nextState, Turn[] moves) {
+	public MooreMachine(int startState, int significantMask, int[][] nextState,
+			Turn[] moves) {
 		this.startState = startState;
 		this.significantMask = significantMask;
 		this.nextState = nextState;

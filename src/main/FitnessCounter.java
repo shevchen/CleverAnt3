@@ -8,8 +8,8 @@ import core.SimulationResult;
 public class FitnessCounter {
 	public static void updateFitness(List<SimulationResult> generation, Field f) {
 		for (SimulationResult sr : generation) {
-			sr.eatenPartsSum += 1. * f.simulate(sr.auto) / f.getTotalFood();
-			sr.fieldsTested++;
+			sr.addPart(1. * f.simulate(sr.getAuto()) / f.getTotalFood());
+			sr.addFields(1);
 		}
 	}
 }

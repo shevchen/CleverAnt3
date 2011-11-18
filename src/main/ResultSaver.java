@@ -46,10 +46,10 @@ public class ResultSaver {
 		try {
 			PrintWriter outAuto = new PrintWriter(new File(curDir
 					+ Constants.AUTO_FILENAME));
-			outAuto.printf(Locale.US, "Eaten part = %.6f", sr.eatenPartsSum
-					/ sr.fieldsTested);
+			outAuto.printf(Locale.US, "Eaten part = %.6f", sr
+					.getMeanEatenPart());
 			outAuto.println();
-			sr.auto.print(outAuto);
+			sr.getAuto().print(outAuto);
 			outAuto.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

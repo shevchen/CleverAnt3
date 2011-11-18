@@ -141,6 +141,9 @@ public class Field {
 		totalFood = 0;
 		for (int i = 0; i < size; ++i) {
 			for (int j = 0; j < size; ++j) {
+				if (i == Constants.START_ROW && j == Constants.START_COLUMN) {
+					continue;
+				}
 				field[i][j] = rand.nextDouble() < Constants.FOOD_PROBABILITY;
 				if (field[i][j]) {
 					++totalFood;
@@ -164,10 +167,6 @@ public class Field {
 		}
 		int curRow = Constants.START_ROW;
 		int curCol = Constants.START_COLUMN;
-		if (fieldCopy[curRow][curCol]) {
-			fieldCopy[curRow][curCol] = false;
-			++eaten;
-		}
 		final int signMask = auto.getSignificantMask();
 		for (int i = 0; i < Constants.TURNS_NUMBER; ++i) {
 			int visibleMask = getVisibleMask(curRow, curCol, currentDir,
