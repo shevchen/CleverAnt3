@@ -11,8 +11,30 @@ import core.MooreMachine;
 import core.Turn;
 
 public class MooreMachineParser {
-	public static MooreMachine parse(File file) throws IOException {
-		BufferedReader br = new BufferedReader(new FileReader(file));
+	private static File findBest() throws IOException {
+		File best = null;
+		double bestFitness = Double.MIN_VALUE;
+		String path = Constants.BEST_AUTO_DIR + "/";
+		File[] list = new File(path).listFiles();
+		for (File f : list) {
+			File current = new File(path + f.getName() + "/"
+					+ Constants.AUTO_FILENAME);
+			BufferedReader br = new BufferedReader(new FileReader(current));
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			for (int i = 0; i < 3; ++i) {
+				st.nextToken();
+			}
+			double curFitness = Double.parseDouble(st.nextToken());
+			if (curFitness > bestFitness) {
+				bestFitness = curFitness;
+				best = current;
+			}
+		}
+		return best;
+	}
+
+	public static MooreMachine parseBest() throws IOException {
+		BufferedReader br = new BufferedReader(new FileReader(findBest()));
 		br.readLine();
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		for (int i = 0; i < 3; ++i) {

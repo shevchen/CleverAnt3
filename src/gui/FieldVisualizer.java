@@ -1,47 +1,80 @@
 package gui;
 
 import java.awt.Color;
+import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
-import javax.swing.table.TableModel;
+import javax.swing.SwingConstants;
+
+import main.MooreMachineParser;
 
 import core.Constants;
+import core.Field;
+import core.MooreMachine;
 
 public class FieldVisualizer {
-	private static void createFieldFrame() {
+	private static Field f;
+	private static MooreMachine m;
+
+	private static JTable getRandomField() {
+		f = new Field();
 		final int size = Constants.FIELD_SIZE;
 		JLabel[][] fieldData = new JLabel[size][size];
 		for (int i = 0; i < size; ++i) {
 			for (int j = 0; j < size; ++j) {
-				fieldData[i][j] = new JLabel(new ImageIcon(
-						Constants.FOOD_FILENAME));
+				if (f.has(i, j)) {
+					fieldData[i][j] = new JLabel(new ImageIcon(
+							Constants.FOOD_FILENAME));
+				} else {
+					fieldData[i][j] = new JLabel();
+				}
 			}
 		}
 		String[] fieldColumnNames = new String[size];
 		for (int i = 0; i < size; ++i) {
 			fieldColumnNames[i] = "";
 		}
-		TableModel model = new FieldModel(fieldData, fieldColumnNames);
-		JTable field = new JTable(model);
-		field.setDefaultRenderer(JLabel.class, new FieldRenderer());
+		JTable field = new JTable(new FieldModel(fieldData, fieldColumnNames));
+		field.setDefaultRenderer(JLabel.class, new JLabelRenderer());
 		for (int i = 0; i < size; ++i) {
 			field.getColumnModel().getColumn(i).setPreferredWidth(20);
 		}
 		field.setRowHeight(20);
 		field.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		field.setEnabled(false);
+		return field;
+	}
+
+	private static JPanel getAuto() {
+		try {
+			m = MooreMachineParser.parseBest();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return new JPanel();
+		}
 		String[] columnNames = { "Состояние", "Действие", "Таблица переходов" };
-		String[][] data = new String[Constants.STATES_NUMBER][columnNames.length];
-		int[] width = { 100, 90, 160 };
-		JTable auto = new JTable(data, columnNames);
-		for (int i = 0; i < columnNames.length; ++i) {
+		final int states = Constants.STATES_NUMBER;
+		final int cols = columnNames.length;
+		Object[][] data = new Object[states][cols];
+		for (int i = 0; i < states; ++i) {
+			data[i][0] = new JLabel(Integer.toString(i), SwingConstants.CENTER);
+			data[i][1] = new JLabel(m.getMove(i).getRuType(),
+					SwingConstants.CENTER);
+			data[i][2] = new JButton("Показать таблицу");
+		}
+		int[] width = { 100, 250, 200 };
+		JTable auto = new JTable(new AutomataModel(data, columnNames));
+		auto.setDefaultRenderer(JLabel.class, new JLabelRenderer());
+		auto.setDefaultRenderer(JButton.class, new JButtonRenderer());
+		for (int i = 0; i < cols; ++i) {
 			auto.getColumnModel().getColumn(i).setPreferredWidth(width[i]);
 		}
 		auto.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -54,13 +87,19 @@ public class FieldVisualizer {
 		autoPanel.setLayout(new BoxLayout(autoPanel, BoxLayout.Y_AXIS));
 		autoPanel.add(auto.getTableHeader());
 		autoPanel.add(auto);
+		return autoPanel;
+	}
+
+	private static void createFieldFrame() {
+		JTable field = getRandomField();
+		JPanel auto = getAuto();
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 		panel.add(Box.createHorizontalStrut(10));
 		panel.add(field);
 		panel.add(Box.createHorizontalStrut(10));
 		panel.add(Box.createHorizontalGlue());
-		panel.add(autoPanel);
+		panel.add(auto);
 		panel.add(Box.createHorizontalStrut(10));
 		JFrame frame = new JFrame();
 		frame

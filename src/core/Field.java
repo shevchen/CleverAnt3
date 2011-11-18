@@ -156,6 +156,10 @@ public class Field {
 		return totalFood;
 	}
 
+	public boolean has(int row, int column) {
+		return field[row][column];
+	}
+
 	public int simulate(final MooreMachine auto) {
 		int eaten = 0;
 		int currentState = auto.getStartState();
