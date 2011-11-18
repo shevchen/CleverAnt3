@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.io.IOException;
 
@@ -15,7 +16,6 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 
 import main.MooreMachineParser;
-
 import core.Constants;
 import core.Field;
 import core.MooreMachine;
@@ -45,9 +45,10 @@ public class FieldVisualizer {
 		JTable field = new JTable(new FieldModel(fieldData, fieldColumnNames));
 		field.setDefaultRenderer(JLabel.class, new JLabelRenderer());
 		for (int i = 0; i < size; ++i) {
-			field.getColumnModel().getColumn(i).setPreferredWidth(20);
+			field.getColumnModel().getColumn(i).setPreferredWidth(
+					Constants.FIELD_CELL_SIZE);
 		}
-		field.setRowHeight(20);
+		field.setRowHeight(Constants.FIELD_CELL_SIZE);
 		field.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		field.setEnabled(false);
 		return field;
@@ -68,15 +69,24 @@ public class FieldVisualizer {
 			data[i][0] = new JLabel(Integer.toString(i), SwingConstants.CENTER);
 			data[i][1] = new JLabel(m.getMove(i).getRuType(),
 					SwingConstants.CENTER);
-			data[i][2] = new JButton("Показать таблицу");
+			JPanel panel = new JPanel();
+			panel.setLayout(new BorderLayout());
+			JButton show = new JButton("Показать таблицу");
+			panel.add(show, BorderLayout.CENTER);
+			panel.add(Box.createVerticalStrut(2), BorderLayout.NORTH);
+			panel.add(Box.createVerticalStrut(2), BorderLayout.SOUTH);
+			panel.add(Box.createHorizontalStrut(2), BorderLayout.EAST);
+			panel.add(Box.createHorizontalStrut(2), BorderLayout.WEST);
+			data[i][2] = panel;
 		}
-		int[] width = { 100, 250, 200 };
 		JTable auto = new JTable(new AutomataModel(data, columnNames));
 		auto.setDefaultRenderer(JLabel.class, new JLabelRenderer());
-		auto.setDefaultRenderer(JButton.class, new JButtonRenderer());
+		auto.setDefaultRenderer(JPanel.class, new JPanelRenderer());
 		for (int i = 0; i < cols; ++i) {
-			auto.getColumnModel().getColumn(i).setPreferredWidth(width[i]);
+			auto.getColumnModel().getColumn(i).setPreferredWidth(
+					Constants.AUTOMATA_TABLE_WIDTH[i]);
 		}
+		auto.setRowHeight(Constants.AUTOMATA_TABLE_HEIGHT);
 		auto.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		auto.getTableHeader().setBorder(
 				BorderFactory.createLineBorder(Color.BLACK));

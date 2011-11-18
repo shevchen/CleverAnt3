@@ -43,4 +43,8 @@ public class Constants {
 	public static final String GENERATIONS_FILENAME = "generations";
 	public static final String BEST_AUTO_DIR = "bestauto";
 	public static final String FOOD_FILENAME = "aphid.jpg";
+
+	public static int FIELD_CELL_SIZE = 20;
+	public static int AUTOMATA_TABLE_HEIGHT = 25;
+	public static int[] AUTOMATA_TABLE_WIDTH = { 100, 250, 200 };
 }
