@@ -1,9 +1,7 @@
-package main;
+package core;
 
 import java.awt.Color;
 import java.awt.Paint;
-
-import core.Direction;
 
 import ec.util.MersenneTwister;
 

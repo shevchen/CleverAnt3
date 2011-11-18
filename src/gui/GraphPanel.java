@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
-import main.Constants;
 import main.ResultSaver;
 
 import org.jfree.chart.ChartFactory;
@@ -19,6 +18,7 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.data.xy.DefaultXYDataset;
 
+import core.Constants;
 import core.Mutation;
 
 public class GraphPanel {

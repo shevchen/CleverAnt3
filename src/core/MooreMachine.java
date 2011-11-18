@@ -2,8 +2,6 @@ package core;
 
 import java.io.PrintWriter;
 
-import main.Constants;
-
 import ec.util.MersenneTwister;
 
 public class MooreMachine {

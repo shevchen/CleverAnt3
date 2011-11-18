@@ -1,11 +1,16 @@
-package core;
+package main;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+
+import core.Constants;
+import core.Field;
+import core.MooreMachine;
+import core.Mutation;
+import core.SimulationResult;
 
 import ec.util.MersenneTwister;
-import main.Constants;
-import main.ResultSaver;
 
 public class Processor {
 	private static void updateGeneration(int genNumber,
@@ -13,7 +18,7 @@ public class Processor {
 		final int size = Constants.GENERATION_SIZE;
 		final MersenneTwister rand = Constants.rand;
 		final int elite = (int) (size * Constants.ELITE_PART);
-		ArrayList<SimulationResult> candidates = new ArrayList<SimulationResult>();
+		List<SimulationResult> candidates = new ArrayList<SimulationResult>();
 		for (int i = 0; i < size; ++i) {
 			int other = rand.nextInt(size);
 			while (i == other) {
@@ -48,7 +53,8 @@ public class Processor {
 		rs.saveGeneration(genNumber, bestPart, meanPart);
 	}
 
-	public static void run(double[] prob, final int iterations, final String dirName) {
+	public static void run(double[] prob, final int iterations,
+			final String dirName) {
 		final int size = Constants.GENERATION_SIZE;
 		ResultSaver rs = new ResultSaver(prob, dirName);
 		SimulationResult[] best = new SimulationResult[size];

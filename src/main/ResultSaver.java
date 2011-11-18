@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.Locale;
 
+import core.Constants;
 import core.Mutation;
 import core.SimulationResult;
 
@@ -18,7 +19,7 @@ public class ResultSaver {
 			if (m.ordinal() > 0) {
 				name += ";";
 			}
-			name += String.format("%.2f", prob[m.ordinal()]);
+			name += String.format(Locale.US, "%.2f", prob[m.ordinal()]);
 		}
 		return name;
 	}

@@ -1,6 +1,6 @@
 package main;
 
-import core.Processor;
+import core.Constants;
 
 public class BestAutomataSearcher {
 	public static void main(String[] args) {
