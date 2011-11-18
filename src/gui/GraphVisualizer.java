@@ -4,11 +4,13 @@ import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import core.Mutation;
 
@@ -64,15 +66,26 @@ public class GraphVisualizer {
 				th.start();
 			}
 		});
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+		panel.add(Box.createHorizontalStrut(5));
+		panel.add(label);
+		panel.add(Box.createHorizontalStrut(5));
+		panel.add(combo);
+		panel.add(Box.createHorizontalStrut(5));
+		panel.add(label2);
+		panel.add(Box.createHorizontalStrut(5));
+		panel.add(combo2);
+		panel.add(Box.createHorizontalStrut(5));
+		panel.add(button);
+		panel.add(Box.createHorizontalStrut(5));
 		JFrame frame = new JFrame();
 		frame
 				.setLayout(new BoxLayout(frame.getContentPane(),
-						BoxLayout.X_AXIS));
-		frame.add(label);
-		frame.add(combo);
-		frame.add(label2);
-		frame.add(combo2);
-		frame.add(button);
+						BoxLayout.Y_AXIS));
+		frame.add(Box.createVerticalStrut(5));
+		frame.add(panel);
+		frame.add(Box.createVerticalStrut(5));
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.pack();
 		frame.setVisible(true);
