@@ -1,6 +1,5 @@
 package gui;
 
-import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,7 +16,7 @@ public class GraphVisualizer {
 	private static int maxMeanIndex = 0;
 	private static int mutationIndex = 0;
 
-	public static void createMainFrame() {
+	private static void createMainFrame() {
 		JLabel label = new JLabel("График зависимости");
 		JComboBox combo = new JComboBox(new String[] { "максимального",
 				"среднего" });
@@ -66,15 +65,16 @@ public class GraphVisualizer {
 			}
 		});
 		JFrame frame = new JFrame();
-		frame.getContentPane().setLayout(
-				new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
+		frame
+				.setLayout(new BoxLayout(frame.getContentPane(),
+						BoxLayout.X_AXIS));
 		frame.add(label);
 		frame.add(combo);
 		frame.add(label2);
 		frame.add(combo2);
 		frame.add(button);
-		frame.setSize(new Dimension(1200, 100));
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frame.pack();
 		frame.setVisible(true);
 	}
 
