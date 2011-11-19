@@ -47,4 +47,10 @@ public class Constants {
 	public static int FIELD_CELL_SIZE = 20;
 	public static int AUTOMATA_TABLE_HEIGHT = 25;
 	public static int[] AUTOMATA_TABLE_WIDTH = { 100, 250, 200 };
+	public static int TRANSITION_TABLE_HEIGHT = 25;
+	public static int[] TRANSITION_TABLE_WIDTH = { 100, 100 };
+
+	public static final Color ANT_POSITION_COLOR = Color.CYAN;
+	public static final Color SIGNIFICANT_CELL_COLOR = Color.YELLOW;
+	public static final Color UNSIGNIFICANT_CELL_COLOR = Color.LIGHT_GRAY;
 }

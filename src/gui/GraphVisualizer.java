@@ -31,7 +31,7 @@ public class GraphVisualizer {
 			}
 		});
 		JLabel label2 = new JLabel(
-				"значения fitness-функции от вероятности мутации");
+				"значения функции приспособленности от вероятности мутации");
 		Mutation[] values = Mutation.values();
 		String[] names = new String[values.length];
 		for (int i = 0; i < values.length; ++i) {
@@ -79,7 +79,7 @@ public class GraphVisualizer {
 		panel.add(Box.createHorizontalStrut(5));
 		panel.add(button);
 		panel.add(Box.createHorizontalStrut(5));
-		JFrame frame = new JFrame();
+		JFrame frame = new JFrame("Графики зависимостей");
 		frame
 				.setLayout(new BoxLayout(frame.getContentPane(),
 						BoxLayout.Y_AXIS));

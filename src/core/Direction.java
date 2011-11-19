@@ -30,4 +30,18 @@ public enum Direction {
 		}
 		throw new RuntimeException();
 	}
+
+	public String getVisualization() {
+		switch (this) {
+		case LEFT:
+			return "←";
+		case RIGHT:
+			return "→";
+		case UP:
+			return "↑";
+		case DOWN:
+			return "↓";
+		}
+		throw new RuntimeException();
+	}
 }
