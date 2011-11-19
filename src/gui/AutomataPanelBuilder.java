@@ -1,7 +1,7 @@
 package gui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -34,8 +34,11 @@ public class AutomataPanelBuilder {
 			}
 		}
 		significant += ".";
+		JLabel label = new JLabel(significant);
 		JPanel panel = new JPanel();
-		panel.add(new JLabel(significant));
+		panel.add(label);
+		panel.setMaximumSize(new Dimension(label.getPreferredSize().width,
+				label.getPreferredSize().height));
 		return panel;
 	}
 
@@ -80,6 +83,8 @@ public class AutomataPanelBuilder {
 		fieldPart.setEnabled(false);
 		JPanel panel = new JPanel();
 		panel.add(fieldPart);
+		panel.setMaximumSize(new Dimension(12 * Constants.FIELD_CELL_SIZE,
+				7 * Constants.FIELD_CELL_SIZE));
 		return panel;
 	}
 
@@ -92,28 +97,22 @@ public class AutomataPanelBuilder {
 			data[i][0] = new JLabel(Integer.toString(i), SwingConstants.CENTER);
 			data[i][1] = new JLabel(m.getMove(i).getRuType(),
 					SwingConstants.CENTER);
-			JPanel panel = new JPanel();
-			panel.setLayout(new BorderLayout());
-			JButton show = new JButton("Показать таблицу");
+			JButton button = new JButton("Показать таблицу");
 			final TransitionTableCreator ttc = new TransitionTableCreator(m, i);
-			show.addActionListener(new ActionListener() {
+			button.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					Thread th = new Thread(ttc);
-					th.start();
+					th.run();
 				}
 			});
-			panel.add(show, BorderLayout.CENTER);
-			final int strut = 2;
-			panel.add(Box.createVerticalStrut(strut), BorderLayout.NORTH);
-			panel.add(Box.createVerticalStrut(strut), BorderLayout.SOUTH);
-			panel.add(Box.createHorizontalStrut(strut), BorderLayout.EAST);
-			panel.add(Box.createHorizontalStrut(strut), BorderLayout.WEST);
-			data[i][2] = panel;
+			data[i][2] = new CenteredButton(button);
 		}
-		JTable auto = new JTable(new AutomataModel(data, columnNames));
+		JTable auto = new JTable(new AutomataTableModel(data, columnNames));
 		auto.setDefaultRenderer(JLabel.class, new JLabelRenderer());
-		auto.setDefaultRenderer(JPanel.class, new JPanelRenderer());
+		auto.setDefaultRenderer(CenteredButton.class,
+				new CenteredButtonRenderer());
+		auto.setDefaultEditor(CenteredButton.class, new CenteredButtonEditor());
 		for (int i = 0; i < cols; ++i) {
 			auto.getColumnModel().getColumn(i).setPreferredWidth(
 					Constants.AUTOMATA_TABLE_WIDTH[i]);
@@ -124,7 +123,6 @@ public class AutomataPanelBuilder {
 				BorderFactory.createLineBorder(Color.BLACK));
 		auto.getTableHeader().setResizingAllowed(false);
 		auto.getTableHeader().setReorderingAllowed(false);
-		auto.setEnabled(false);
 		return auto;
 	}
 
@@ -138,12 +136,11 @@ public class AutomataPanelBuilder {
 		JTable autoTable = getAutoTable(m);
 		JPanel autoPanel = new JPanel();
 		autoPanel.setLayout(new BoxLayout(autoPanel, BoxLayout.Y_AXIS));
-		final int strut = 20;
-		autoPanel.add(Box.createVerticalStrut(strut));
+		autoPanel.add(Box.createVerticalGlue());
 		autoPanel.add(getSignTextPanel(m));
-		autoPanel.add(Box.createVerticalGlue());
+		autoPanel.add(Box.createVerticalStrut(Constants.DEFAULT_STRUT));
 		autoPanel.add(getSignVisualPanel(m));
-		autoPanel.add(Box.createVerticalGlue());
+		autoPanel.add(Box.createVerticalStrut(5 * Constants.DEFAULT_STRUT));
 		autoPanel.add(autoTable.getTableHeader());
 		autoPanel.add(autoTable);
 		return autoPanel;

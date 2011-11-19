@@ -209,7 +209,7 @@ public class MooreMachine {
 		}
 	}
 
-	private String getBitString(int mask, int length) {
+	public static String getBitString(int mask, int length) {
 		char[] ans = new char[length];
 		for (int i = 0; i < length; ++i) {
 			ans[length - 1 - i] = (char) ('0' + ((mask >> i) & 1));

@@ -44,11 +44,13 @@ public class Constants {
 	public static final String BEST_AUTO_DIR = "bestauto";
 	public static final String FOOD_FILENAME = "aphid.jpg";
 
-	public static int FIELD_CELL_SIZE = 20;
-	public static int AUTOMATA_TABLE_HEIGHT = 25;
-	public static int[] AUTOMATA_TABLE_WIDTH = { 100, 250, 200 };
-	public static int TRANSITION_TABLE_HEIGHT = 25;
-	public static int[] TRANSITION_TABLE_WIDTH = { 100, 100 };
+	public static final int FIELD_CELL_SIZE = 20;
+	public static final int AUTOMATA_TABLE_HEIGHT = 25;
+	public static final int[] AUTOMATA_TABLE_WIDTH = { 100, 250, 200 };
+	public static final int CENTERED_BUTTON_STRUT = 2;
+	public static final int TRANSITION_TABLE_HEIGHT = 25;
+	public static final int[] TRANSITION_TABLE_WIDTH = { 100, 230 };
+	public static final int DEFAULT_STRUT = 10;
 
 	public static final Color ANT_POSITION_COLOR = Color.CYAN;
 	public static final Color SIGNIFICANT_CELL_COLOR = Color.YELLOW;

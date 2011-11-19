@@ -1,11 +1,10 @@
 package gui;
 
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 
-public class AutomataModel extends DefaultTableModel {
-	public AutomataModel(Object[][] data, String[] columnNames) {
+public class TransitionTableModel extends DefaultTableModel {
+	public TransitionTableModel(Object[][] data, String[] columnNames) {
 		for (String s : columnNames) {
 			super.addColumn(s);
 		}
@@ -16,6 +15,6 @@ public class AutomataModel extends DefaultTableModel {
 
 	@Override
 	public Class<?> getColumnClass(int columnIndex) {
-		return columnIndex < 2 ? JLabel.class : JPanel.class;
+		return JLabel.class;
 	}
 }
