@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -15,7 +14,6 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 
-import main.MooreMachineParser;
 import core.Constants;
 import core.Direction;
 import core.MooreMachine;
@@ -126,13 +124,7 @@ public class AutomataPanelBuilder {
 		return auto;
 	}
 
-	public static JPanel getAuto(MooreMachine m) {
-		try {
-			m = MooreMachineParser.parseBest();
-		} catch (IOException e) {
-			e.printStackTrace();
-			return new JPanel();
-		}
+	public static JPanel getAutoPanel(MooreMachine m) {
 		JTable autoTable = getAutoTable(m);
 		JPanel autoPanel = new JPanel();
 		autoPanel.setLayout(new BoxLayout(autoPanel, BoxLayout.Y_AXIS));

@@ -2,6 +2,8 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.io.IOException;
+import java.util.LinkedList;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -12,15 +14,23 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
+import main.MooreMachineParser;
+import core.AntState;
 import core.Constants;
+import core.Direction;
 import core.Field;
 import core.MooreMachine;
 
 public class FieldVisualizer {
-	private static Field f;
-	private static MooreMachine m;
+	private Field f;
+	private MooreMachine m;
+	private int currentState;
+	private int currentRow, currentColumn;
+	private Direction currentDir;
+	private int stepsDone;
+	private LinkedList<AntState> stack;
 
-	private static JPanel getRandomField() {
+	private JPanel getRandomField() {
 		f = new Field();
 		final int size = Constants.FIELD_SIZE;
 		JLabel[][] fieldData = new JLabel[size][size];
@@ -53,7 +63,27 @@ public class FieldVisualizer {
 		return panel;
 	}
 
-	private static void createFieldFrame() {
+	private void initAuto() {
+		try {
+			m = MooreMachineParser.parseBest();
+		} catch (IOException e) {
+			e.printStackTrace();
+			m = null;
+			return;
+		}
+		currentState = m.getStartState();
+		currentRow = Constants.START_ROW;
+		currentColumn = Constants.START_COLUMN;
+		currentDir = Constants.START_DIRECTION;
+		stepsDone = 0;
+		stack = new LinkedList<AntState>();
+	}
+
+	private void createFieldFrame() {
+		initAuto();
+		if (m == null) {
+			return;
+		}
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 		final int strut = 10;
@@ -61,7 +91,7 @@ public class FieldVisualizer {
 		panel.add(getRandomField());
 		panel.add(Box.createHorizontalStrut(strut));
 		panel.add(Box.createHorizontalGlue());
-		panel.add(AutomataPanelBuilder.getAuto(m));
+		panel.add(AutomataPanelBuilder.getAutoPanel(m));
 		panel.add(Box.createHorizontalStrut(strut));
 		JFrame frame = new JFrame("Визуализатор автомата");
 		frame
@@ -76,6 +106,6 @@ public class FieldVisualizer {
 	}
 
 	public static void main(String[] args) {
-		createFieldFrame();
+		new FieldVisualizer().createFieldFrame();
 	}
 }
