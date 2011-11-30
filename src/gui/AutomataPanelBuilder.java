@@ -67,7 +67,7 @@ public class AutomataPanelBuilder {
 					data[i][j].setBackground(Constants.SIGNIFICANT_CELL_COLOR);
 				} else {
 					data[i][j]
-							.setBackground(Constants.UNSIGNIFICANT_CELL_COLOR);
+							.setBackground(Constants.INSIGNIFICANT_CELL_COLOR);
 				}
 			}
 		}

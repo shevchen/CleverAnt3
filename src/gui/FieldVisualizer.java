@@ -20,6 +20,7 @@ import javax.swing.SwingConstants;
 
 import main.MooreMachineParser;
 import core.AntState;
+import core.Cell;
 import core.Constants;
 import core.Field;
 import core.MooreMachine;
@@ -33,15 +34,18 @@ public class FieldVisualizer {
 	private LinkedList<Boolean> wasFood;
 	private JPanel[][] fieldData;
 	private boolean[][] hasIcon;
+	private int antRow, antColumn;
 	private ImageIcon icon;
 	private JButton forward, backward, skip, restart;
 	private JLabel eatenLabel, turnsLabel;
 	private JFrame frame;
 
 	private void updateField() {
+		fieldData[antRow][antColumn].removeAll();
 		final int size = Constants.FIELD_SIZE;
 		for (int i = 0; i < size; ++i) {
 			for (int j = 0; j < size; ++j) {
+				fieldData[i][j].setBackground(Constants.EMPTY_CELL_COLOR);
 				if (fcopy[i][j]) {
 					if (!hasIcon[i][j]) {
 						JLabel label = new JLabel();
@@ -58,10 +62,25 @@ public class FieldVisualizer {
 				}
 			}
 		}
+		AntState cur = stack.getLast();
+		Cell[] visible = Field.getVisible(cur.row, cur.column, cur.dir);
+		int signMask = m.getSignificantMask();
+		JLabel ant = new JLabel(cur.dir.getVisualization(),
+				SwingConstants.CENTER);
+		fieldData[cur.row][cur.column]
+				.setBackground(Constants.ANT_POSITION_COLOR);
+		antRow = cur.row;
+		antColumn = cur.column;
+		fieldData[cur.row][cur.column].add(ant, BorderLayout.CENTER);
+		for (int i = 0; i < visible.length; ++i) {
+			fieldData[visible[i].row][visible[i].column]
+					.setBackground(((signMask >> i) & 1) == 1 ? Constants.SIGNIFICANT_CELL_COLOR
+							: Constants.INSIGNIFICANT_CELL_COLOR);
+		}
 	}
 
 	private void updateAuto() {
-		int active = stack.getLast().currentState;
+		int active = stack.getLast().autoState;
 		final int states = Constants.STATES_NUMBER;
 		for (int i = 0; i < states; ++i) {
 			apb.setActive(i, i == active);
@@ -150,7 +169,7 @@ public class FieldVisualizer {
 	private void stepBackward() {
 		AntState last = stack.removeLast();
 		if (wasFood.removeLast()) {
-			fcopy[last.currentRow][last.currentColumn] = true;
+			fcopy[last.row][last.column] = true;
 		}
 	}
 

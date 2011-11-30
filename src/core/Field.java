@@ -23,7 +23,7 @@ public class Field {
 		return n;
 	}
 
-	private static Cell[] getVisible(int row, int column, Direction dir) {
+	public static Cell[] getVisible(int row, int column, Direction dir) {
 		Cell[] result = new Cell[Constants.VISIBLE_CELLS];
 		switch (dir) {
 		case LEFT:
@@ -160,26 +160,25 @@ public class Field {
 
 	public static boolean makeStep(MooreMachine auto, AntState as,
 			boolean[][] curField) {
-		int visibleMask = getVisibleMask(as.currentRow, as.currentColumn,
-				as.currentDir, curField);
-		Turn action = auto.getMove(as.currentState);
-		as.currentState = auto.getNextState(as.currentState, getActualMask(
+		int visibleMask = getVisibleMask(as.row, as.column, as.dir, curField);
+		Turn action = auto.getMove(as.autoState);
+		as.autoState = auto.getNextState(as.autoState, getActualMask(
 				visibleMask, auto.getSignificantMask()));
 		switch (action) {
 		case MOVE:
-			as.currentRow = getNextRow(as.currentRow, as.currentDir);
-			as.currentColumn = getNextColumn(as.currentColumn, as.currentDir);
-			if (curField[as.currentRow][as.currentColumn]) {
-				curField[as.currentRow][as.currentColumn] = false;
+			as.row = getNextRow(as.row, as.dir);
+			as.column = getNextColumn(as.column, as.dir);
+			if (curField[as.row][as.column]) {
+				curField[as.row][as.column] = false;
 				++as.eaten;
 				return true;
 			}
 			return false;
 		case ROTATELEFT:
-			as.currentDir = as.currentDir.rotateLeft();
+			as.dir = as.dir.rotateLeft();
 			return false;
 		case ROTATERIGHT:
-			as.currentDir = as.currentDir.rotateRight();
+			as.dir = as.dir.rotateRight();
 			return false;
 		}
 		throw new RuntimeException();

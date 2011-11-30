@@ -54,7 +54,8 @@ public class Constants {
 
 	public static final Color ANT_POSITION_COLOR = Color.CYAN;
 	public static final Color SIGNIFICANT_CELL_COLOR = Color.YELLOW;
-	public static final Color UNSIGNIFICANT_CELL_COLOR = Color.LIGHT_GRAY;
+	public static final Color INSIGNIFICANT_CELL_COLOR = Color.LIGHT_GRAY;
+	public static final Color EMPTY_CELL_COLOR = Color.WHITE;
 	public static final Color ACTIVE_STATE_COLOR = Color.CYAN;
 	public static final Color INACTIVE_STATE_COLOR = Color.WHITE;
 }
