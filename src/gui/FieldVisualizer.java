@@ -34,6 +34,7 @@ public class FieldVisualizer {
 	private JLabel[][] fieldData;
 	private ImageIcon icon;
 	private JButton forward, backward, skip, restart;
+	private JLabel eatenLabel;
 	private JFrame frame;
 
 	private void updateField() {
@@ -58,14 +59,22 @@ public class FieldVisualizer {
 	}
 
 	private void updateButtons() {
+		restart.setEnabled(!wasFood.isEmpty());
 		backward.setEnabled(!wasFood.isEmpty());
 		forward.setEnabled(wasFood.size() < Constants.TURNS_NUMBER);
+		skip.setEnabled(wasFood.size() < Constants.TURNS_NUMBER);
+	}
+
+	private void updateLabel() {
+		eatenLabel.setText("Съедено: " + stack.getLast().eaten + "/"
+				+ f.getTotalFood());
 	}
 
 	private void updateAll() {
 		updateField();
 		updateAuto();
 		updateButtons();
+		updateLabel();
 		frame.repaint();
 	}
 
@@ -121,16 +130,14 @@ public class FieldVisualizer {
 
 	private void stepForward() {
 		AntState current = stack.getLast().clone();
-		wasFood.addLast(fcopy[current.currentRow][current.currentColumn]);
-		Field.makeStep(m, current, fcopy);
+		wasFood.addLast(Field.makeStep(m, current, fcopy));
 		stack.addLast(current);
 	}
 
 	private void stepBackward() {
-		stack.removeLast();
-		AntState current = stack.getLast();
+		AntState last = stack.removeLast();
 		if (wasFood.removeLast()) {
-			fcopy[current.currentRow][current.currentColumn] = true;
+			fcopy[last.currentRow][last.currentColumn] = true;
 		}
 	}
 
@@ -149,6 +156,7 @@ public class FieldVisualizer {
 		apb = new AutomataPanelBuilder();
 		mainPanel.add(apb.getAutoPanel(m));
 		mainPanel.add(Box.createHorizontalStrut(strut));
+		eatenLabel = new JLabel("Съедено: 0/" + f.getTotalFood());
 		forward = new JButton("Шаг вперёд");
 		forward.addActionListener(new ActionListener() {
 			@Override
@@ -169,7 +177,7 @@ public class FieldVisualizer {
 		skip.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				while (wasFood.size() < 200) {
+				while (wasFood.size() < Constants.TURNS_NUMBER) {
 					stepForward();
 				}
 				updateAll();
@@ -186,6 +194,7 @@ public class FieldVisualizer {
 			}
 		});
 		JPanel buttonPanel = new JPanel();
+		buttonPanel.add(eatenLabel);
 		buttonPanel.add(restart);
 		buttonPanel.add(forward);
 		buttonPanel.add(backward);

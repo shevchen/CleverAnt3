@@ -158,7 +158,7 @@ public class Field {
 		return totalFood;
 	}
 
-	public static void makeStep(MooreMachine auto, AntState as,
+	public static boolean makeStep(MooreMachine auto, AntState as,
 			boolean[][] curField) {
 		int visibleMask = getVisibleMask(as.currentRow, as.currentColumn,
 				as.currentDir, curField);
@@ -172,12 +172,17 @@ public class Field {
 			if (curField[as.currentRow][as.currentColumn]) {
 				curField[as.currentRow][as.currentColumn] = false;
 				++as.eaten;
+				return true;
 			}
+			return false;
 		case ROTATELEFT:
 			as.currentDir = as.currentDir.rotateLeft();
+			return false;
 		case ROTATERIGHT:
 			as.currentDir = as.currentDir.rotateRight();
+			return false;
 		}
+		throw new RuntimeException();
 	}
 
 	public static int simulate(MooreMachine auto, Field f) {
