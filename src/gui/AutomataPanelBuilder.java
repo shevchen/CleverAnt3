@@ -94,7 +94,8 @@ public class AutomataPanelBuilder {
 		final int cols = columnNames.length;
 		data = new Object[states][cols];
 		for (int i = 0; i < states; ++i) {
-			JLabel label = new JLabel(Integer.toString(i), SwingConstants.CENTER);
+			JLabel label = new JLabel(Integer.toString(i),
+					SwingConstants.CENTER);
 			label.setOpaque(true);
 			data[i][0] = label;
 			data[i][1] = new JLabel(m.getMove(i).getRuType(),

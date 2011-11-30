@@ -2,6 +2,8 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.LinkedList;
 
@@ -9,6 +11,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -26,11 +29,11 @@ public class FieldVisualizer {
 	private boolean[][] fcopy;
 	private MooreMachine m;
 	private AutomataPanelBuilder apb;
-	private int stepsDone;
 	private LinkedList<AntState> stack;
 	private LinkedList<Boolean> wasFood;
 	private JLabel[][] fieldData;
 	private ImageIcon icon;
+	private JButton forward, backward, skip, restart;
 
 	private void updateField() {
 		final int size = Constants.FIELD_SIZE;
@@ -51,6 +54,17 @@ public class FieldVisualizer {
 		for (int i = 0; i < states; ++i) {
 			apb.setActive(i, i == active);
 		}
+	}
+
+	private void updateButtons() {
+		backward.setEnabled(!wasFood.isEmpty());
+		forward.setEnabled(wasFood.size() < Constants.TURNS_NUMBER);
+	}
+
+	private void updateAll() {
+		updateField();
+		updateAuto();
+		updateButtons();
 	}
 
 	private JPanel getRandomField() {
@@ -97,7 +111,6 @@ public class FieldVisualizer {
 			m = null;
 			return;
 		}
-		stepsDone = 0;
 		stack = new LinkedList<AntState>();
 		stack.add(new AntState(m.getStartState(), Constants.START_ROW,
 				Constants.START_COLUMN, Constants.START_DIRECTION, 0));
@@ -109,12 +122,14 @@ public class FieldVisualizer {
 		wasFood.addLast(fcopy[current.currentRow][current.currentColumn]);
 		Field.makeStep(m, current, fcopy);
 		stack.addLast(current);
-		++stepsDone;
-		updateField();
 	}
 
 	private void stepBackward() {
-
+		stack.removeLast();
+		AntState current = stack.getLast();
+		if (wasFood.removeLast()) {
+			fcopy[current.currentRow][current.currentColumn] = true;
+		}
 	}
 
 	private void createFieldFrame() {
@@ -122,25 +137,71 @@ public class FieldVisualizer {
 		if (m == null) {
 			return;
 		}
-		JPanel panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+		JPanel mainPanel = new JPanel();
+		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.X_AXIS));
 		final int strut = 10;
-		panel.add(Box.createHorizontalStrut(strut));
-		panel.add(getRandomField());
-		panel.add(Box.createHorizontalStrut(strut));
-		panel.add(Box.createHorizontalGlue());
+		mainPanel.add(Box.createHorizontalStrut(strut));
+		mainPanel.add(getRandomField());
+		mainPanel.add(Box.createHorizontalStrut(strut));
+		mainPanel.add(Box.createHorizontalGlue());
 		apb = new AutomataPanelBuilder();
-		panel.add(apb.getAutoPanel(m));
-		panel.add(Box.createHorizontalStrut(strut));
+		mainPanel.add(apb.getAutoPanel(m));
+		mainPanel.add(Box.createHorizontalStrut(strut));
+		forward = new JButton("Шаг вперёд");
+		forward.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				stepForward();
+				updateAll();
+			}
+		});
+		backward = new JButton("Шаг назад");
+		backward.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				stepBackward();
+				updateAll();
+			}
+		});
+		skip = new JButton("В конец");
+		skip.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				while (wasFood.size() < 200) {
+					stepForward();
+				}
+				updateAll();
+			}
+		});
+		restart = new JButton("Рестарт");
+		restart.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				while (!wasFood.isEmpty()) {
+					stepBackward();
+				}
+				updateAll();
+			}
+		});
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.add(restart);
+		buttonPanel.add(forward);
+		buttonPanel.add(backward);
+		buttonPanel.add(skip);
+		JPanel wholePanel = new JPanel();
+		wholePanel.setLayout(new BoxLayout(wholePanel, BoxLayout.Y_AXIS));
+		wholePanel.add(mainPanel);
+		wholePanel.add(buttonPanel);
 		JFrame frame = new JFrame("Визуализатор автомата");
 		frame
 				.setLayout(new BoxLayout(frame.getContentPane(),
 						BoxLayout.Y_AXIS));
 		frame.add(Box.createVerticalStrut(strut));
-		frame.add(panel);
+		frame.add(wholePanel);
 		frame.add(Box.createVerticalStrut(strut));
 		updateField();
 		updateAuto();
+		updateButtons();
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.pack();
 		frame.setVisible(true);
