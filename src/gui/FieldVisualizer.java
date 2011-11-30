@@ -34,7 +34,7 @@ public class FieldVisualizer {
 	private JLabel[][] fieldData;
 	private ImageIcon icon;
 	private JButton forward, backward, skip, restart;
-	private JLabel eatenLabel;
+	private JLabel eatenLabel, turnsLabel;
 	private JFrame frame;
 
 	private void updateField() {
@@ -65,16 +65,18 @@ public class FieldVisualizer {
 		skip.setEnabled(wasFood.size() < Constants.TURNS_NUMBER);
 	}
 
-	private void updateLabel() {
+	private void updateLabels() {
 		eatenLabel.setText("Съедено: " + stack.getLast().eaten + "/"
 				+ f.getTotalFood());
+		turnsLabel.setText("Ходов сделано: " + wasFood.size() + "/"
+				+ Constants.TURNS_NUMBER);
 	}
 
 	private void updateAll() {
 		updateField();
 		updateAuto();
 		updateButtons();
-		updateLabel();
+		updateLabels();
 		frame.repaint();
 	}
 
@@ -157,6 +159,7 @@ public class FieldVisualizer {
 		mainPanel.add(apb.getAutoPanel(m));
 		mainPanel.add(Box.createHorizontalStrut(strut));
 		eatenLabel = new JLabel("Съедено: 0/" + f.getTotalFood());
+		turnsLabel = new JLabel("Ходов сделано: 0/" + Constants.TURNS_NUMBER);
 		forward = new JButton("Шаг вперёд");
 		forward.addActionListener(new ActionListener() {
 			@Override
@@ -194,14 +197,22 @@ public class FieldVisualizer {
 			}
 		});
 		JPanel buttonPanel = new JPanel();
+		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
+		buttonPanel.add(Box.createHorizontalStrut(strut));
+		buttonPanel.add(turnsLabel);
+		buttonPanel.add(Box.createHorizontalStrut(2 * strut));
 		buttonPanel.add(eatenLabel);
+		buttonPanel.add(Box.createHorizontalGlue());
 		buttonPanel.add(restart);
 		buttonPanel.add(forward);
 		buttonPanel.add(backward);
 		buttonPanel.add(skip);
+		buttonPanel.add(Box.createHorizontalGlue());
+		buttonPanel.add(Box.createHorizontalStrut(30 * strut));
 		JPanel wholePanel = new JPanel();
 		wholePanel.setLayout(new BoxLayout(wholePanel, BoxLayout.Y_AXIS));
 		wholePanel.add(mainPanel);
+		wholePanel.add(Box.createVerticalStrut(strut));
 		wholePanel.add(buttonPanel);
 		frame = new JFrame("Визуализатор автомата");
 		frame
