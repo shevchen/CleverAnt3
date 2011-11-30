@@ -31,7 +31,8 @@ public class FieldVisualizer {
 	private AutomataPanelBuilder apb;
 	private LinkedList<AntState> stack;
 	private LinkedList<Boolean> wasFood;
-	private JLabel[][] fieldData;
+	private JPanel[][] fieldData;
+	private boolean[][] hasIcon;
 	private ImageIcon icon;
 	private JButton forward, backward, skip, restart;
 	private JLabel eatenLabel, turnsLabel;
@@ -42,9 +43,18 @@ public class FieldVisualizer {
 		for (int i = 0; i < size; ++i) {
 			for (int j = 0; j < size; ++j) {
 				if (fcopy[i][j]) {
-					fieldData[i][j].setIcon(icon);
+					if (!hasIcon[i][j]) {
+						JLabel label = new JLabel();
+						label.setHorizontalAlignment(SwingConstants.CENTER);
+						label.setIcon(icon);
+						fieldData[i][j].add(label, BorderLayout.CENTER);
+						hasIcon[i][j] = true;
+					}
 				} else {
-					fieldData[i][j].removeAll();
+					if (hasIcon[i][j]) {
+						fieldData[i][j].removeAll();
+						hasIcon[i][j] = false;
+					}
 				}
 			}
 		}
@@ -90,11 +100,12 @@ public class FieldVisualizer {
 			}
 		}
 		icon = new ImageIcon(Constants.FOOD_FILENAME);
-		fieldData = new JLabel[size][size];
+		fieldData = new JPanel[size][size];
+		hasIcon = new boolean[size][size];
 		for (int i = 0; i < size; ++i) {
 			for (int j = 0; j < size; ++j) {
-				fieldData[i][j] = new JLabel();
-				fieldData[i][j].setHorizontalAlignment(SwingConstants.CENTER);
+				fieldData[i][j] = new JPanel();
+				fieldData[i][j].setLayout(new BorderLayout());
 			}
 		}
 		String[] fieldColumnNames = new String[size];
@@ -102,7 +113,7 @@ public class FieldVisualizer {
 			fieldColumnNames[i] = "";
 		}
 		JTable field = new JTable(new FieldModel(fieldData, fieldColumnNames));
-		field.setDefaultRenderer(JLabel.class, new JLabelRenderer());
+		field.setDefaultRenderer(JPanel.class, new JPanelRenderer());
 		for (int i = 0; i < size; ++i) {
 			field.getColumnModel().getColumn(i).setPreferredWidth(
 					Constants.FIELD_CELL_SIZE);

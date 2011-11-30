@@ -72,7 +72,8 @@ public class AutomataPanelBuilder {
 			}
 		}
 		data[0][2].setBackground(Constants.ANT_POSITION_COLOR);
-		JTable fieldPart = new JTable(new FieldModel(data, columnNames));
+		JTable fieldPart = new JTable(new SignificantPanelModel(data,
+				columnNames));
 		fieldPart.setDefaultRenderer(JLabel.class, new JLabelRenderer());
 		for (int i = 0; i < cols; ++i) {
 			fieldPart.getColumnModel().getColumn(i).setPreferredWidth(
