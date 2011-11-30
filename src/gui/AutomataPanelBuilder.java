@@ -19,7 +19,7 @@ import core.Direction;
 import core.MooreMachine;
 
 public class AutomataPanelBuilder {
-	private Object[][] data;
+	private JPanel[][] data;
 
 	private JPanel getSignTextPanel(MooreMachine m) {
 		String significant = "Номера видимых полей, образующих предикат:";
@@ -92,14 +92,14 @@ public class AutomataPanelBuilder {
 		String[] columnNames = { "Состояние", "Действие", "Таблица переходов" };
 		final int states = Constants.STATES_NUMBER;
 		final int cols = columnNames.length;
-		data = new Object[states][cols];
+		data = new JPanel[states][cols];
 		for (int i = 0; i < states; ++i) {
-			JLabel label = new JLabel(Integer.toString(i),
-					SwingConstants.CENTER);
-			label.setOpaque(true);
-			data[i][0] = label;
-			data[i][1] = new JLabel(m.getMove(i).getRuType(),
-					SwingConstants.CENTER);
+			data[i][0] = new JPanel();
+			data[i][0].add(new JLabel(Integer.toString(i),
+					SwingConstants.CENTER));
+			data[i][1] = new JPanel();
+			data[i][1].add(new JLabel(m.getMove(i).getRuType(),
+					SwingConstants.CENTER));
 			JButton button = new JButton("Показать таблицу");
 			final TransitionTableCreator ttc = new TransitionTableCreator(m, i);
 			button.addActionListener(new ActionListener() {
@@ -112,7 +112,7 @@ public class AutomataPanelBuilder {
 			data[i][2] = new CenteredButton(button);
 		}
 		JTable auto = new JTable(new AutomataTableModel(data, columnNames));
-		auto.setDefaultRenderer(JLabel.class, new JLabelRenderer());
+		auto.setDefaultRenderer(JPanel.class, new JPanelRenderer());
 		auto.setDefaultRenderer(CenteredButton.class,
 				new CenteredButtonRenderer());
 		auto.setDefaultEditor(CenteredButton.class, new CenteredButtonEditor());
@@ -144,8 +144,8 @@ public class AutomataPanelBuilder {
 	}
 
 	public void setActive(int state, boolean active) {
-		JLabel label = (JLabel) data[state][0];
-		label.setBackground(active ? Constants.ACTIVE_STATE_COLOR
+		JPanel panel = data[state][0];
+		panel.setBackground(active ? Constants.ACTIVE_STATE_COLOR
 				: Constants.INACTIVE_STATE_COLOR);
 	}
 }

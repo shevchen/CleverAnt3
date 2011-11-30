@@ -34,6 +34,7 @@ public class FieldVisualizer {
 	private JLabel[][] fieldData;
 	private ImageIcon icon;
 	private JButton forward, backward, skip, restart;
+	private JFrame frame;
 
 	private void updateField() {
 		final int size = Constants.FIELD_SIZE;
@@ -65,6 +66,7 @@ public class FieldVisualizer {
 		updateField();
 		updateAuto();
 		updateButtons();
+		frame.repaint();
 	}
 
 	private JPanel getRandomField() {
@@ -192,7 +194,7 @@ public class FieldVisualizer {
 		wholePanel.setLayout(new BoxLayout(wholePanel, BoxLayout.Y_AXIS));
 		wholePanel.add(mainPanel);
 		wholePanel.add(buttonPanel);
-		JFrame frame = new JFrame("Визуализатор автомата");
+		frame = new JFrame("Визуализатор автомата");
 		frame
 				.setLayout(new BoxLayout(frame.getContentPane(),
 						BoxLayout.Y_AXIS));

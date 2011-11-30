@@ -1,6 +1,6 @@
 package gui;
 
-import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 
 public class AutomataTableModel extends DefaultTableModel {
@@ -24,6 +24,6 @@ public class AutomataTableModel extends DefaultTableModel {
 
 	@Override
 	public Class<?> getColumnClass(int columnIndex) {
-		return columnIndex < 2 ? JLabel.class : CenteredButton.class;
+		return columnIndex < 2 ? JPanel.class : CenteredButton.class;
 	}
 }
