@@ -33,10 +33,11 @@ public class FieldVisualizer {
 	private LinkedList<AntState> stack;
 	private LinkedList<Boolean> wasFood;
 	private JPanel[][] fieldData;
+	private JPanel mainPanel;
 	private boolean[][] hasIcon;
 	private int antRow, antColumn;
 	private ImageIcon icon;
-	private JButton forward, backward, skip, restart;
+	private JButton forward, backward, skip, restart, newField;
 	private JLabel eatenLabel, turnsLabel;
 	private JFrame frame;
 
@@ -154,6 +155,9 @@ public class FieldVisualizer {
 			m = null;
 			return;
 		}
+	}
+
+	private void initStack() {
 		stack = new LinkedList<AntState>();
 		stack.add(new AntState(m.getStartState(), Constants.START_ROW,
 				Constants.START_COLUMN, Constants.START_DIRECTION, 0));
@@ -175,14 +179,16 @@ public class FieldVisualizer {
 
 	private void createFieldFrame() {
 		initAuto();
+		initStack();
 		if (m == null) {
 			return;
 		}
-		JPanel mainPanel = new JPanel();
+		mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.X_AXIS));
 		final int strut = 10;
 		mainPanel.add(Box.createHorizontalStrut(strut));
-		mainPanel.add(getRandomField());
+		JPanel fieldPanel = getRandomField();
+		mainPanel.add(fieldPanel);
 		mainPanel.add(Box.createHorizontalStrut(strut));
 		mainPanel.add(Box.createHorizontalGlue());
 		apb = new AutomataPanelBuilder();
@@ -226,6 +232,16 @@ public class FieldVisualizer {
 				updateAll();
 			}
 		});
+		newField = new JButton("Новое поле");
+		newField.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mainPanel.remove(1);
+				mainPanel.add(getRandomField(), 1);
+				initStack();
+				updateAll();
+			}
+		});
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
 		buttonPanel.add(Box.createHorizontalStrut(strut));
@@ -237,6 +253,7 @@ public class FieldVisualizer {
 		buttonPanel.add(forward);
 		buttonPanel.add(backward);
 		buttonPanel.add(skip);
+		buttonPanel.add(newField);
 		buttonPanel.add(Box.createHorizontalGlue());
 		buttonPanel.add(Box.createHorizontalStrut(30 * strut));
 		JPanel wholePanel = new JPanel();
