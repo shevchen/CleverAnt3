@@ -100,14 +100,14 @@ public class GraphPanel {
 		}
 		String title = "Зависимость "
 				+ (maximal ? "максимального" : "среднего")
-				+ " значения fitness-функции от вероятности мутации "
+				+ " значения функции приспособленности от вероятности мутации "
 				+ m.getRuType();
 		String[] graphNames = new String[probs.length];
 		for (int i = 0; i < graphs; ++i) {
 			graphNames[i] = "вероятность мутации " + probs[i];
 		}
 		String xLabel = "Номер поколения";
-		String yLabel = "Fitness-функция - доля собранной еды";
+		String yLabel = "Функция приспособленности — доля собранной еды";
 		Paint[] colors = Arrays.copyOf(Constants.DEFAULT_COLORS, graphs);
 		double[] width = new double[graphs];
 		Arrays.fill(width, 2.);
