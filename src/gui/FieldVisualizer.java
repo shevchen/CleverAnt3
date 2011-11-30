@@ -13,35 +13,61 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 
 import main.MooreMachineParser;
 import core.AntState;
 import core.Constants;
-import core.Direction;
 import core.Field;
 import core.MooreMachine;
 
 public class FieldVisualizer {
 	private Field f;
+	private boolean[][] fcopy;
 	private MooreMachine m;
-	private int currentState;
-	private int currentRow, currentColumn;
-	private Direction currentDir;
+	private AutomataPanelBuilder apb;
 	private int stepsDone;
 	private LinkedList<AntState> stack;
+	private LinkedList<Boolean> wasFood;
+	private JLabel[][] fieldData;
+	private ImageIcon icon;
+
+	private void updateField() {
+		final int size = Constants.FIELD_SIZE;
+		for (int i = 0; i < size; ++i) {
+			for (int j = 0; j < size; ++j) {
+				if (fcopy[i][j]) {
+					fieldData[i][j].setIcon(icon);
+				} else {
+					fieldData[i][j].removeAll();
+				}
+			}
+		}
+	}
+
+	private void updateAuto() {
+		int active = stack.getLast().currentState;
+		final int states = Constants.STATES_NUMBER;
+		for (int i = 0; i < states; ++i) {
+			apb.setActive(i, i == active);
+		}
+	}
 
 	private JPanel getRandomField() {
 		f = new Field();
 		final int size = Constants.FIELD_SIZE;
-		JLabel[][] fieldData = new JLabel[size][size];
+		fcopy = new boolean[size][size];
 		for (int i = 0; i < size; ++i) {
 			for (int j = 0; j < size; ++j) {
-				if (f.has(i, j)) {
-					fieldData[i][j] = new JLabel(new ImageIcon(
-							Constants.FOOD_FILENAME));
-				} else {
-					fieldData[i][j] = new JLabel();
-				}
+				fcopy[i][j] = f.hasFood(i, j);
+			}
+		}
+		icon = new ImageIcon(Constants.FOOD_FILENAME);
+		fieldData = new JLabel[size][size];
+		for (int i = 0; i < size; ++i) {
+			for (int j = 0; j < size; ++j) {
+				fieldData[i][j] = new JLabel();
+				fieldData[i][j].setHorizontalAlignment(SwingConstants.CENTER);
 			}
 		}
 		String[] fieldColumnNames = new String[size];
@@ -71,12 +97,24 @@ public class FieldVisualizer {
 			m = null;
 			return;
 		}
-		currentState = m.getStartState();
-		currentRow = Constants.START_ROW;
-		currentColumn = Constants.START_COLUMN;
-		currentDir = Constants.START_DIRECTION;
 		stepsDone = 0;
 		stack = new LinkedList<AntState>();
+		stack.add(new AntState(m.getStartState(), Constants.START_ROW,
+				Constants.START_COLUMN, Constants.START_DIRECTION, 0));
+		wasFood = new LinkedList<Boolean>();
+	}
+
+	private void stepForward() {
+		AntState current = stack.getLast().clone();
+		wasFood.addLast(fcopy[current.currentRow][current.currentColumn]);
+		Field.makeStep(m, current, fcopy);
+		stack.addLast(current);
+		++stepsDone;
+		updateField();
+	}
+
+	private void stepBackward() {
+
 	}
 
 	private void createFieldFrame() {
@@ -91,7 +129,8 @@ public class FieldVisualizer {
 		panel.add(getRandomField());
 		panel.add(Box.createHorizontalStrut(strut));
 		panel.add(Box.createHorizontalGlue());
-		panel.add(AutomataPanelBuilder.getAutoPanel(m));
+		apb = new AutomataPanelBuilder();
+		panel.add(apb.getAutoPanel(m));
 		panel.add(Box.createHorizontalStrut(strut));
 		JFrame frame = new JFrame("Визуализатор автомата");
 		frame
@@ -100,6 +139,8 @@ public class FieldVisualizer {
 		frame.add(Box.createVerticalStrut(strut));
 		frame.add(panel);
 		frame.add(Box.createVerticalStrut(strut));
+		updateField();
+		updateAuto();
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.pack();
 		frame.setVisible(true);

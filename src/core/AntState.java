@@ -1,31 +1,23 @@
 package core;
 
-public class AntState {
-	private int currentState;
-	private int currentRow, currentColumn;
-	private Direction currentDir;
+public class AntState implements Cloneable {
+	public int currentState;
+	public int currentRow, currentColumn;
+	public Direction currentDir;
+	public int eaten;
 
 	public AntState(int currentState, int currentRow, int currentColumn,
-			Direction currentDir) {
+			Direction currentDir, int eaten) {
 		this.currentState = currentState;
 		this.currentRow = currentRow;
 		this.currentColumn = currentColumn;
 		this.currentDir = currentDir;
+		this.eaten = eaten;
 	}
 
-	public int getCurrentState() {
-		return currentState;
-	}
-
-	public int getCurrentRow() {
-		return currentRow;
-	}
-
-	public int getCurrentColumn() {
-		return currentColumn;
-	}
-
-	public Direction getCurrentDir() {
-		return currentDir;
+	@Override
+	public AntState clone() {
+		return new AntState(currentState, currentRow, currentColumn,
+				currentDir, eaten);
 	}
 }

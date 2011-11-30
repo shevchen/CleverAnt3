@@ -19,7 +19,9 @@ import core.Direction;
 import core.MooreMachine;
 
 public class AutomataPanelBuilder {
-	private static JPanel getSignTextPanel(MooreMachine m) {
+	private Object[][] data;
+
+	private JPanel getSignTextPanel(MooreMachine m) {
 		String significant = "Номера видимых полей, образующих предикат:";
 		boolean found = false;
 		for (int i = 0; i < Constants.VISIBLE_CELLS; ++i) {
@@ -40,7 +42,7 @@ public class AutomataPanelBuilder {
 		return panel;
 	}
 
-	private static JPanel getSignVisualPanel(MooreMachine m) {
+	private JPanel getSignVisualPanel(MooreMachine m) {
 		String[][] values = {
 				{ "7", "5", Direction.DOWN.getVisualization(), "1", "0" },
 				{ "", "6", "3", "2", "" }, { "", "", "4", "", "" } };
@@ -86,13 +88,15 @@ public class AutomataPanelBuilder {
 		return panel;
 	}
 
-	private static JTable getAutoTable(MooreMachine m) {
+	private JTable getAutoTable(MooreMachine m) {
 		String[] columnNames = { "Состояние", "Действие", "Таблица переходов" };
 		final int states = Constants.STATES_NUMBER;
 		final int cols = columnNames.length;
-		Object[][] data = new Object[states][cols];
+		data = new Object[states][cols];
 		for (int i = 0; i < states; ++i) {
-			data[i][0] = new JLabel(Integer.toString(i), SwingConstants.CENTER);
+			JLabel label = new JLabel(Integer.toString(i), SwingConstants.CENTER);
+			label.setOpaque(true);
+			data[i][0] = label;
 			data[i][1] = new JLabel(m.getMove(i).getRuType(),
 					SwingConstants.CENTER);
 			JButton button = new JButton("Показать таблицу");
@@ -124,7 +128,7 @@ public class AutomataPanelBuilder {
 		return auto;
 	}
 
-	public static JPanel getAutoPanel(MooreMachine m) {
+	public JPanel getAutoPanel(MooreMachine m) {
 		JTable autoTable = getAutoTable(m);
 		JPanel autoPanel = new JPanel();
 		autoPanel.setLayout(new BoxLayout(autoPanel, BoxLayout.Y_AXIS));
@@ -136,5 +140,11 @@ public class AutomataPanelBuilder {
 		autoPanel.add(autoTable.getTableHeader());
 		autoPanel.add(autoTable);
 		return autoPanel;
+	}
+
+	public void setActive(int state, boolean active) {
+		JLabel label = (JLabel) data[state][0];
+		label.setBackground(active ? Constants.ACTIVE_STATE_COLOR
+				: Constants.INACTIVE_STATE_COLOR);
 	}
 }

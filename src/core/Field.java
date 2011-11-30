@@ -6,10 +6,13 @@ import ec.util.MersenneTwister;
 
 public class Field {
 	private boolean[][] field;
-	private boolean[][] fieldCopy;
 	private int totalFood;
 
-	private int modSize(int n) {
+	public boolean hasFood(int row, int column) {
+		return field[row][column];
+	}
+
+	private static int modSize(int n) {
 		final int size = Constants.FIELD_SIZE;
 		if (n < 0) {
 			n += size;
@@ -20,7 +23,7 @@ public class Field {
 		return n;
 	}
 
-	private Cell[] getVisible(int row, int column, Direction dir) {
+	private static Cell[] getVisible(int row, int column, Direction dir) {
 		Cell[] result = new Cell[Constants.VISIBLE_CELLS];
 		switch (dir) {
 		case LEFT:
@@ -83,7 +86,7 @@ public class Field {
 		throw new RuntimeException();
 	}
 
-	private int getNextRow(int row, Direction dir) {
+	private static int getNextRow(int row, Direction dir) {
 		switch (dir) {
 		case LEFT:
 			return row;
@@ -97,7 +100,7 @@ public class Field {
 		throw new RuntimeException();
 	}
 
-	private int getNextColumn(int column, Direction dir) {
+	private static int getNextColumn(int column, Direction dir) {
 		switch (dir) {
 		case LEFT:
 			return modSize(column - 1);
@@ -111,7 +114,7 @@ public class Field {
 		throw new RuntimeException();
 	}
 
-	private int getVisibleMask(int row, int column, Direction dir,
+	private static int getVisibleMask(int row, int column, Direction dir,
 			boolean[][] left) {
 		Cell[] cells = getVisible(row, column, dir);
 		int result = 0;
@@ -121,7 +124,7 @@ public class Field {
 		return result;
 	}
 
-	private int getActualMask(int fullMask, int signMask) {
+	private static int getActualMask(int fullMask, int signMask) {
 		final int vis = Constants.VISIBLE_CELLS;
 		int currentBit = 0;
 		int result = 0;
@@ -136,7 +139,6 @@ public class Field {
 	public Field() {
 		final int size = Constants.FIELD_SIZE;
 		field = new boolean[size][size];
-		fieldCopy = new boolean[size][size];
 		final MersenneTwister rand = Constants.rand;
 		totalFood = 0;
 		for (int i = 0; i < size; ++i) {
@@ -156,43 +158,42 @@ public class Field {
 		return totalFood;
 	}
 
-	public boolean has(int row, int column) {
-		return field[row][column];
+	public static void makeStep(MooreMachine auto, AntState as,
+			boolean[][] curField) {
+		int visibleMask = getVisibleMask(as.currentRow, as.currentColumn,
+				as.currentDir, curField);
+		Turn action = auto.getMove(as.currentState);
+		as.currentState = auto.getNextState(as.currentState, getActualMask(
+				visibleMask, auto.getSignificantMask()));
+		switch (action) {
+		case MOVE:
+			as.currentRow = getNextRow(as.currentRow, as.currentDir);
+			as.currentColumn = getNextColumn(as.currentColumn, as.currentDir);
+			if (curField[as.currentRow][as.currentColumn]) {
+				curField[as.currentRow][as.currentColumn] = false;
+				++as.eaten;
+			}
+		case ROTATELEFT:
+			as.currentDir = as.currentDir.rotateLeft();
+		case ROTATERIGHT:
+			as.currentDir = as.currentDir.rotateRight();
+		}
 	}
 
-	public int simulate(final MooreMachine auto) {
-		int eaten = 0;
-		int currentState = auto.getStartState();
-		Direction currentDir = Constants.START_DIRECTION;
+	public static int simulate(MooreMachine auto, Field f) {
+		final int size = Constants.FIELD_SIZE;
+		boolean[][] curField = new boolean[size][size];
 		for (int i = 0; i < Constants.FIELD_SIZE; ++i) {
-			System
-					.arraycopy(field[i], 0, fieldCopy[i], 0,
-							Constants.FIELD_SIZE);
+			System.arraycopy(f.field[i], 0, curField[i], 0,
+					Constants.FIELD_SIZE);
 		}
-		int curRow = Constants.START_ROW;
-		int curCol = Constants.START_COLUMN;
-		final int signMask = auto.getSignificantMask();
+		AntState antState = new AntState(auto.getStartState(),
+				Constants.START_ROW, Constants.START_COLUMN,
+				Constants.START_DIRECTION, 0);
 		for (int i = 0; i < Constants.TURNS_NUMBER; ++i) {
-			int visibleMask = getVisibleMask(curRow, curCol, currentDir,
-					fieldCopy);
-			Turn action = auto.getMove(currentState);
-			currentState = auto.getNextState(currentState, getActualMask(
-					visibleMask, signMask));
-			switch (action) {
-			case MOVE:
-				curRow = getNextRow(curRow, currentDir);
-				curCol = getNextColumn(curCol, currentDir);
-				if (fieldCopy[curRow][curCol]) {
-					fieldCopy[curRow][curCol] = false;
-					++eaten;
-				}
-			case ROTATELEFT:
-				currentDir = currentDir.rotateLeft();
-			case ROTATERIGHT:
-				currentDir = currentDir.rotateRight();
-			}
+			makeStep(auto, antState, curField);
 		}
-		return eaten;
+		return antState.eaten;
 	}
 
 	public void print(PrintWriter out) {
