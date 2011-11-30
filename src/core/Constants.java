@@ -53,7 +53,7 @@ public class Constants {
 	public static final int DEFAULT_STRUT = 10;
 
 	public static final Color ANT_POSITION_COLOR = Color.CYAN;
-	public static final Color SIGNIFICANT_CELL_COLOR = Color.YELLOW;
+	public static final Color SIGNIFICANT_CELL_COLOR = new Color(250, 127, 50); // bronze
 	public static final Color INSIGNIFICANT_CELL_COLOR = Color.LIGHT_GRAY;
 	public static final Color EMPTY_CELL_COLOR = Color.WHITE;
 	public static final Color ACTIVE_STATE_COLOR = Color.CYAN;

@@ -37,7 +37,7 @@ public class FieldVisualizer {
 	private boolean[][] hasIcon;
 	private int antRow, antColumn;
 	private ImageIcon icon;
-	private JButton forward, backward, skip, restart, newField;
+	private JButton forward, backward, skip, restart, newField, close;
 	private JLabel eatenLabel, turnsLabel;
 	private JFrame frame;
 
@@ -242,6 +242,13 @@ public class FieldVisualizer {
 				updateAll();
 			}
 		});
+		close = new JButton("Закрыть");
+		close.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+			}
+		});
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
 		buttonPanel.add(Box.createHorizontalStrut(strut));
@@ -255,7 +262,8 @@ public class FieldVisualizer {
 		buttonPanel.add(skip);
 		buttonPanel.add(newField);
 		buttonPanel.add(Box.createHorizontalGlue());
-		buttonPanel.add(Box.createHorizontalStrut(30 * strut));
+		buttonPanel.add(close);
+		buttonPanel.add(Box.createHorizontalStrut(strut));
 		JPanel wholePanel = new JPanel();
 		wholePanel.setLayout(new BoxLayout(wholePanel, BoxLayout.Y_AXIS));
 		wholePanel.add(mainPanel);
