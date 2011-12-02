@@ -18,11 +18,11 @@ public class Constants {
 	public static final int GENERATION_SIZE = 50;
 	public static final double ELITE_PART = 0.2;
 	public static final int FIELDS_IN_GENERATION = 50;
-	public static final int ITERATIONS = 150;
+	public static final int ITERATIONS = 1000;
 	public static final int SEARCHER_ITERATIONS = 5000;
 
-	public static final double[] MUTATION_PROBABILITIES = { 0.01, 0.05, 0.1,
-			0.15, 0.2 };
+	public static final double[] MUTATION_PROBABILITIES = { 0.1, 0.2, 0.3, 0.4,
+			0.5 };
 
 	public static final double[] BEST_MUTATION_PROBABILITIES = { 0.15, 0.2,
 			0.2, 0.12 };
