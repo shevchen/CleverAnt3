@@ -19,11 +19,9 @@ import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 
 import core.Constants;
-import core.Mutation;
 
-public class GraphVisualizer {
+public class BestAutoGraphVisualizer {
 	private static int maxMeanIndex = 0;
-	private static int mutationIndex = 0;
 
 	private static void createMainFrame() {
 		JLabel label = new JLabel("График зависимости");
@@ -38,21 +36,7 @@ public class GraphVisualizer {
 			}
 		});
 		JLabel label2 = new JLabel(
-				"значения функции приспособленности от вероятности мутации");
-		Mutation[] values = Mutation.values();
-		String[] names = new String[values.length];
-		for (int i = 0; i < values.length; ++i) {
-			names[i] = values[i].getRuType();
-		}
-		JComboBox combo2 = new JComboBox(names);
-		combo2.setSelectedIndex(mutationIndex);
-		combo2.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JComboBox cb = (JComboBox) e.getSource();
-				mutationIndex = cb.getSelectedIndex();
-			}
-		});
+				"значения функции приспособленности от номера поколения");
 		JButton button = new JButton("Показать график");
 		button.addActionListener(new ActionListener() {
 			@Override
@@ -63,13 +47,11 @@ public class GraphVisualizer {
 						String title = "Зависимость "
 								+ (maxMeanIndex == 0 ? "максимального"
 										: "среднего")
-								+ " значения функции приспособленности от вероятности мутации "
-								+ Mutation.values()[mutationIndex].getRuType();
+								+ " значения функции приспособленности от номера поколения";
 						JFrame newFrame = new JFrame(title);
-						Mutation m = Mutation.values()[mutationIndex];
-						JFreeChart chart = GraphPanel.getGraph(m,
-								maxMeanIndex == 0);
-						String screenshotDir = Constants.RESULTS_DIR + "/" + m;
+						JFreeChart chart = GraphPanel
+								.getBestAutoGraph(maxMeanIndex == 0);
+						String screenshotDir = Constants.BEST_AUTO_DIR + "/";
 						new File(screenshotDir).mkdirs();
 						String screenshotFile = screenshotDir + "/"
 								+ (maxMeanIndex == 0 ? "max" : "mean")
@@ -101,8 +83,6 @@ public class GraphVisualizer {
 		panel.add(combo);
 		panel.add(Box.createHorizontalStrut(strut));
 		panel.add(label2);
-		panel.add(Box.createHorizontalStrut(strut));
-		panel.add(combo2);
 		panel.add(Box.createHorizontalStrut(strut));
 		panel.add(button);
 		panel.add(Box.createHorizontalStrut(strut));

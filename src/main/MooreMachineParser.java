@@ -15,10 +15,12 @@ public class MooreMachineParser {
 		File best = null;
 		double bestFitness = Double.MIN_VALUE;
 		String path = Constants.BEST_AUTO_DIR + "/";
-		File[] list = new File(path).listFiles();
-		for (File f : list) {
+		for (File f : new File(path).listFiles()) {
 			File current = new File(path + f.getName() + "/"
 					+ Constants.AUTO_FILENAME);
+			if (!current.exists()) {
+				continue;
+			}
 			BufferedReader br = new BufferedReader(new FileReader(current));
 			StringTokenizer st = new StringTokenizer(br.readLine());
 			for (int i = 0; i < 3; ++i) {
