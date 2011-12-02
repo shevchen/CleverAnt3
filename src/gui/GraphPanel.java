@@ -75,10 +75,13 @@ public class GraphPanel {
 			prob[m.ordinal()] = probs[pr];
 			String dirName = Constants.RESULTS_DIR + "/"
 					+ ResultSaver.getDirectoryName(prob) + "/";
-			File[] list = new File(dirName).listFiles();
-			for (File f : list) {
+			int succeeded = 0;
+			for (File f : new File(dirName).listFiles()) {
 				File full = new File(dirName + f.getName() + "/"
 						+ Constants.GENERATIONS_FILENAME);
+				if (!full.exists()) {
+					continue;
+				}
 				try {
 					BufferedReader buff = new BufferedReader(new FileReader(
 							full));
@@ -91,10 +94,11 @@ public class GraphPanel {
 					e.printStackTrace();
 					return null;
 				}
+				++succeeded;
 			}
 			for (int i = 0; i < iter; ++i) {
 				abscissas[pr][i] = i + 1;
-				ordinates[pr][i] /= list.length;
+				ordinates[pr][i] /= succeeded;
 			}
 		}
 		String[] graphNames = new String[probs.length];
@@ -108,5 +112,50 @@ public class GraphPanel {
 		Arrays.fill(width, Constants.GRAPH_WIDTH);
 		return createGraph(abscissas, ordinates, null, graphNames, xLabel,
 				yLabel, colors, width);
+	}
+
+	public static JFreeChart getBestAutoGraph(boolean maximal) {
+		final int iter = Constants.SEARCHER_ITERATIONS;
+		double[][] abscissas = new double[1][iter];
+		double[][] ordinates = new double[1][iter];
+		String dirName = Constants.BEST_AUTO_DIR + "/";
+		int succeeded = 0;
+		for (File f : new File(dirName).listFiles()) {
+			File full = new File(dirName + f.getName() + "/"
+					+ Constants.GENERATIONS_FILENAME);
+			if (!full.exists()) {
+				continue;
+			}
+			try {
+				BufferedReader buff = new BufferedReader(new FileReader(full));
+				if (maximal) {
+					readMax(buff, ordinates[0]);
+				} else {
+					readMean(buff, ordinates[0]);
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+				return null;
+			}
+			++succeeded;
+		}
+		for (int i = 0; i < iter; ++i) {
+			abscissas[0][i] = i + 1;
+			ordinates[0][i] /= succeeded;
+		}
+		String graphName = "вероятности мутаций: ";
+		double[] bprob = Constants.BEST_MUTATION_PROBABILITIES;
+		for (int i = 0; i < bprob.length; ++i) {
+			if (i > 0) {
+				graphName += ", ";
+			}
+			graphName += Mutation.values()[i] + " — " + bprob[i];
+		}
+		String xLabel = "Номер поколения";
+		String yLabel = "Функция приспособленности — доля собранной еды";
+		Paint[] colors = { Constants.DEFAULT_COLORS[0] };
+		double[] width = { Constants.GRAPH_WIDTH };
+		return createGraph(abscissas, ordinates, null,
+				new String[] { graphName }, xLabel, yLabel, colors, width);
 	}
 }
