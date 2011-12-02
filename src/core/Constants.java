@@ -24,8 +24,8 @@ public class Constants {
 	public static final double[] MUTATION_PROBABILITIES = { 0.1, 0.3, 0.5, 0.7,
 			1. };
 
-	public static final double[] BEST_MUTATION_PROBABILITIES = { 0.15, 0.2,
-			0.2, 0.12 };
+	public static final double[] BEST_MUTATION_PROBABILITIES = { 1.0, 0.5, 0.7,
+			1.0 };
 
 	public static final MersenneTwister rand = new MersenneTwister(System
 			.nanoTime());
