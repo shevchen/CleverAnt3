@@ -21,8 +21,8 @@ public class Constants {
 	public static final int ITERATIONS = 1000;
 	public static final int SEARCHER_ITERATIONS = 5000;
 
-	public static final double[] MUTATION_PROBABILITIES = { 0.1, 0.2, 0.3, 0.4,
-			0.5 };
+	public static final double[] MUTATION_PROBABILITIES = { 0.1, 0.3, 0.5, 0.7,
+			1. };
 
 	public static final double[] BEST_MUTATION_PROBABILITIES = { 0.15, 0.2,
 			0.2, 0.12 };
@@ -35,14 +35,18 @@ public class Constants {
 	public static final int SEARCHES_PER_THREAD = 5;
 
 	public static final Paint[] DEFAULT_COLORS = { Color.RED, Color.GREEN,
-			Color.BLUE, Color.BLACK, Color.YELLOW, Color.CYAN, Color.GRAY,
-			Color.MAGENTA };
+			Color.BLUE, Color.BLACK, new Color(250, 127, 50) /* bronze */,
+			Color.ORANGE, Color.YELLOW, Color.CYAN, Color.GRAY, Color.MAGENTA };
+	public static final double GRAPH_WIDTH = 1.5;
 
 	public static final String RESULTS_DIR = "results";
 	public static final String AUTO_FILENAME = "auto";
 	public static final String GENERATIONS_FILENAME = "generations";
 	public static final String BEST_AUTO_DIR = "bestauto";
 	public static final String FOOD_FILENAME = "aphid.jpg";
+	public static final String SCREENSHOT_FILENAME = "graph.png";
+	public static final int SCREENSHOT_WIDTH = 1280;
+	public static final int SCREENSHOT_HEIGHT = 1024;
 
 	public static final int FIELD_CELL_SIZE = 20;
 	public static final int AUTOMATA_TABLE_HEIGHT = 25;

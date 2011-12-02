@@ -3,6 +3,8 @@ package gui;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -12,6 +14,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.ChartUtilities;
+import org.jfree.chart.JFreeChart;
+
+import core.Constants;
 import core.Mutation;
 
 public class GraphVisualizer {
@@ -53,10 +60,29 @@ public class GraphVisualizer {
 				Thread th = new Thread(new Runnable() {
 					@Override
 					public void run() {
-						JFrame newFrame = new JFrame();
-						newFrame.add(GraphPanel.getGraph(
-								Mutation.values()[mutationIndex],
-								maxMeanIndex == 0));
+						String title = "Зависимость "
+								+ (maxMeanIndex == 0 ? "максимального"
+										: "среднего")
+								+ " значения функции приспособленности от вероятности мутации "
+								+ Mutation.values()[mutationIndex].getRuType();
+						JFrame newFrame = new JFrame(title);
+						Mutation m = Mutation.values()[mutationIndex];
+						JFreeChart chart = GraphPanel.getGraph(m,
+								maxMeanIndex == 0);
+						String screenshotDir = Constants.RESULTS_DIR + "/" + m;
+						new File(screenshotDir).mkdirs();
+						String screenshotFile = screenshotDir + "/"
+								+ (maxMeanIndex == 0 ? "max" : "mean")
+								+ Constants.SCREENSHOT_FILENAME;
+						try {
+							ChartUtilities.saveChartAsPNG(new File(
+									screenshotFile), chart,
+									Constants.SCREENSHOT_WIDTH,
+									Constants.SCREENSHOT_HEIGHT);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						newFrame.add(new ChartPanel(chart));
 						newFrame.setExtendedState(Frame.MAXIMIZED_BOTH);
 						newFrame
 								.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

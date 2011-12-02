@@ -12,7 +12,6 @@ import java.util.StringTokenizer;
 import main.ResultSaver;
 
 import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
@@ -22,7 +21,7 @@ import core.Constants;
 import core.Mutation;
 
 public class GraphPanel {
-	private static ChartPanel createGraph(double[][] abscissas,
+	private static JFreeChart createGraph(double[][] abscissas,
 			double[][] ordinates, String title, String[] graphNames,
 			String xLabel, String yLabel, Paint[] colors, double[] width) {
 		int graphs = abscissas.length;
@@ -39,7 +38,7 @@ public class GraphPanel {
 					BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 			ren.setSeriesPaint(i, colors[i]);
 		}
-		return new ChartPanel(chart);
+		return chart;
 	}
 
 	private static void readMax(BufferedReader buff, double[] data)
@@ -64,7 +63,7 @@ public class GraphPanel {
 		}
 	}
 
-	public static ChartPanel getGraph(Mutation m, boolean maximal) {
+	public static JFreeChart getGraph(Mutation m, boolean maximal) {
 		final int mut = Mutation.values().length;
 		double[] prob = new double[mut];
 		final int iter = Constants.ITERATIONS;
@@ -98,10 +97,6 @@ public class GraphPanel {
 				ordinates[pr][i] /= list.length;
 			}
 		}
-		String title = "Зависимость "
-				+ (maximal ? "максимального" : "среднего")
-				+ " значения функции приспособленности от вероятности мутации "
-				+ m.getRuType();
 		String[] graphNames = new String[probs.length];
 		for (int i = 0; i < graphs; ++i) {
 			graphNames[i] = "вероятность мутации " + probs[i];
@@ -110,8 +105,8 @@ public class GraphPanel {
 		String yLabel = "Функция приспособленности — доля собранной еды";
 		Paint[] colors = Arrays.copyOf(Constants.DEFAULT_COLORS, graphs);
 		double[] width = new double[graphs];
-		Arrays.fill(width, 2.);
-		return createGraph(abscissas, ordinates, title, graphNames, xLabel,
+		Arrays.fill(width, Constants.GRAPH_WIDTH);
+		return createGraph(abscissas, ordinates, null, graphNames, xLabel,
 				yLabel, colors, width);
 	}
 }
