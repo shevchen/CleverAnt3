@@ -149,7 +149,7 @@ public class GraphPanel {
 			if (i > 0) {
 				graphName += ", ";
 			}
-			graphName += Mutation.values()[i] + " — " + bprob[i];
+			graphName += Mutation.values()[i].getRuType() + " — " + bprob[i];
 		}
 		String xLabel = "Номер поколения";
 		String yLabel = "Функция приспособленности — доля собранной еды";
