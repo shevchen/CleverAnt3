@@ -41,21 +41,9 @@ public class GraphPanel {
 		return chart;
 	}
 
-	private static void readMax(BufferedReader buff, double[] data)
+	private static void readPart(BufferedReader buff, double[] data)
 			throws IOException {
 		for (int i = 0; i < data.length; ++i) {
-			buff.readLine();
-			StringTokenizer st = new StringTokenizer(buff.readLine());
-			data[i] += Double.parseDouble(st.nextToken());
-			buff.readLine();
-			buff.readLine();
-		}
-	}
-
-	private static void readMean(BufferedReader buff, double[] data)
-			throws IOException {
-		for (int i = 0; i < data.length; ++i) {
-			buff.readLine();
 			buff.readLine();
 			StringTokenizer st = new StringTokenizer(buff.readLine());
 			data[i] += Double.parseDouble(st.nextToken());
@@ -63,7 +51,7 @@ public class GraphPanel {
 		}
 	}
 
-	public static JFreeChart getGraph(Mutation m, boolean maximal) {
+	public static JFreeChart getGraph(Mutation m) {
 		final int mut = Mutation.values().length;
 		double[] prob = new double[mut];
 		final int iter = Constants.ITERATIONS;
@@ -85,11 +73,7 @@ public class GraphPanel {
 				try {
 					BufferedReader buff = new BufferedReader(new FileReader(
 							full));
-					if (maximal) {
-						readMax(buff, ordinates[pr]);
-					} else {
-						readMean(buff, ordinates[pr]);
-					}
+					readPart(buff, ordinates[pr]);
 				} catch (IOException e) {
 					e.printStackTrace();
 					return null;
@@ -114,7 +98,7 @@ public class GraphPanel {
 				yLabel, colors, width);
 	}
 
-	public static JFreeChart getBestAutoGraph(boolean maximal) {
+	public static JFreeChart getBestAutoGraph() {
 		final int iter = Constants.SEARCHER_ITERATIONS;
 		double[][] abscissas = new double[1][iter];
 		double[][] ordinates = new double[1][iter];
@@ -128,11 +112,7 @@ public class GraphPanel {
 			}
 			try {
 				BufferedReader buff = new BufferedReader(new FileReader(full));
-				if (maximal) {
-					readMax(buff, ordinates[0]);
-				} else {
-					readMean(buff, ordinates[0]);
-				}
+				readPart(buff, ordinates[0]);
 			} catch (IOException e) {
 				e.printStackTrace();
 				return null;

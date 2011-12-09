@@ -19,7 +19,7 @@ public class Runner {
 								final String dirName = Constants.RESULTS_DIR
 										+ "/"
 										+ ResultSaver.getDirectoryName(prob);
-								Processor.run(prob, Constants.ITERATIONS,
+								new Processor().run(prob, Constants.ITERATIONS,
 										dirName);
 							}
 						}

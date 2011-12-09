@@ -15,24 +15,22 @@ public class Constants {
 	public static final int STATES_NUMBER = 10;
 	public static final int VISIBLE_CELLS = 8;
 	public static final int SIGNIFICANT_INPUTS = 4;
-	public static final int GENERATION_SIZE = 50;
-	public static final double ELITE_PART = 0.2;
-	public static final int FIELDS_IN_GENERATION = 50;
+	public static final int FIELDS_IN_GENERATION = 100;
 	public static final int ITERATIONS = 1000;
 	public static final int SEARCHER_ITERATIONS = 5000;
 
 	public static final double[] MUTATION_PROBABILITIES = { 0.1, 0.3, 0.5, 0.7,
 			1. };
 
-	public static final double[] BEST_MUTATION_PROBABILITIES = { 0.5, 1.0, 0.7,
-			0.7 };
+	public static final double[] BEST_MUTATION_PROBABILITIES = { 1.0, 1.0, 0.5,
+			0.1 };
 
 	public static final MersenneTwister rand = new MersenneTwister(System
 			.nanoTime());
 
 	public static final int THREADS = 2;
-	public static final int RUNNINGS_PER_THREAD = 5;
-	public static final int SEARCHES_PER_THREAD = 5;
+	public static final int RUNNINGS_PER_THREAD = 50;
+	public static final int SEARCHES_PER_THREAD = 10;
 
 	public static final Paint[] DEFAULT_COLORS = { Color.RED, Color.GREEN,
 			Color.BLUE, Color.BLACK, new Color(250, 127, 50) /* bronze */,

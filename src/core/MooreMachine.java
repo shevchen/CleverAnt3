@@ -4,7 +4,7 @@ import java.io.PrintWriter;
 
 import ec.util.MersenneTwister;
 
-public class MooreMachine {
+public class MooreMachine implements Cloneable {
 	private int startState;
 	private int significantMask;
 	private int[][] nextState;
@@ -43,6 +43,22 @@ public class MooreMachine {
 		for (int i = 0; i < states; ++i) {
 			moves[i] = values[rand.nextInt(values.length)];
 		}
+	}
+
+	@Override
+	public MooreMachine clone() {
+		int[][] nextSt = new int[nextState.length][];
+		for (int i = 0; i < nextSt.length; ++i) {
+			nextSt[i] = new int[nextState[i].length];
+			for (int j = 0; j < nextSt[i].length; ++j) {
+				nextSt[i][j] = nextState[i][j];
+			}
+		}
+		Turn[] mv = new Turn[moves.length];
+		for (int i = 0; i < moves.length; ++i) {
+			mv[i] = moves[i];
+		}
+		return new MooreMachine(startState, significantMask, nextSt, mv);
 	}
 
 	public int getStartState() {
