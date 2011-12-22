@@ -12,6 +12,11 @@ public class Processor {
 	private SimulationResult best;
 	private ResultSaver rs;
 	private double[] prob;
+	private double[] values;
+
+	public Processor(String dirName) {
+		this.rs = new ResultSaver(prob, dirName);
+	}
 
 	private void updateGeneration(int genNumber) {
 		final MersenneTwister rand = Constants.rand;
@@ -32,20 +37,29 @@ public class Processor {
 		rs.saveGeneration(genNumber, part);
 	}
 
-	public void run(double[] prob, final int iterations, final String dirName) {
+	public void run(double[] prob, final int iterations) {
 		this.prob = prob;
 		final int fieldsN = Constants.FIELDS_IN_GENERATION;
 		fields = new Field[fieldsN];
 		for (int i = 0; i < fieldsN; ++i) {
 			fields[i] = new Field();
 		}
-		rs = new ResultSaver(prob, dirName);
+		values = new double[Constants.ITERATIONS];
 		best = new SimulationResult(new MooreMachine(), 0., 0);
 		for (Field f : fields) {
 			FitnessCounter.updateFitness(best, f);
 		}
 		for (int j = 0; j < iterations; ++j) {
 			updateGeneration(j + 1);
+			values[j] = best.getMeanEatenPart();
+			if (j >= Constants.STAGNATION_TIME
+					&& values[j] < Constants.NO_STAGNATION_THRESHOLD
+					&& values[j] - values[j - Constants.STAGNATION_TIME] < Constants.STAGNATION_DELTA) {
+				rs.clear();
+				System.err.println("Restart");
+				run(prob, iterations);
+				return;
+			}
 		}
 		rs.saveAutomaton(best);
 		rs.close();

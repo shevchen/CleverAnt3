@@ -23,8 +23,9 @@ public class Runner {
 								final String dirName = Constants.RESULTS_DIR
 										+ "/"
 										+ ResultSaver.getDirectoryName(prob);
-								new Processor().run(prob, Constants.ITERATIONS,
-										dirName);
+								new Processor(dirName).run(prob,
+										Constants.ITERATIONS);
+								System.err.println(Arrays.toString(prob));
 							}
 						}
 					}

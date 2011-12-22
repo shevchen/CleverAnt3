@@ -42,6 +42,16 @@ public class ResultSaver {
 		outGen.close();
 	}
 
+	public void clear() {
+		try {
+			outGen.close();
+			outGen = new PrintWriter(new File(curDir
+					+ Constants.GENERATIONS_FILENAME));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void saveAutomaton(SimulationResult sr) {
 		try {
 			PrintWriter outAuto = new PrintWriter(new File(curDir

@@ -11,10 +11,9 @@ public class BestAutomataSearcher {
 				@Override
 				public void run() {
 					for (int i = 0; i < Constants.SEARCHES_PER_THREAD; ++i) {
-						new Processor().run(
+						new Processor(Constants.BEST_AUTO_DIR).run(
 								Constants.BEST_MUTATION_PROBABILITIES,
-								Constants.SEARCHER_ITERATIONS,
-								Constants.BEST_AUTO_DIR);
+								Constants.SEARCHER_ITERATIONS);
 					}
 				}
 			});
