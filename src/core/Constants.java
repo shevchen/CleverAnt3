@@ -14,7 +14,7 @@ public class Constants {
 	public static final Direction START_DIRECTION = Direction.RIGHT;
 	public static final int STATES_NUMBER = 10;
 	public static final int VISIBLE_CELLS = 8;
-	public static final int SIGNIFICANT_INPUTS = 4;
+	public static final int SIGNIFICANT_INPUTS = 5;
 	public static final int FIELDS_IN_GENERATION = 100;
 	public static final int ITERATIONS = 1000;
 	public static final int SEARCHER_ITERATIONS = 5000;
