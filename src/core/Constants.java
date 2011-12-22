@@ -26,14 +26,14 @@ public class Constants {
 			1. };
 	public static final double OTHER_MUTATION_PROBABILITY = 0.1;
 
-	public static final double[] BEST_MUTATION_PROBABILITIES = { 1.0, 0.7, 0.1,
-			0.3 };
+	public static final double[] BEST_MUTATION_PROBABILITIES = { 0.9, 0.4, 0.2,
+			0.2 };
 
 	public static final MersenneTwister rand = new MersenneTwister(System
 			.nanoTime());
 
 	public static final int THREADS = 2;
-	public static final int RUNNINGS_PER_THREAD = 10;
+	public static final int RUNNINGS_PER_THREAD = 25;
 	public static final int SEARCHES_PER_THREAD = 10;
 
 	public static final Paint[] DEFAULT_COLORS = { Color.RED, Color.GREEN,

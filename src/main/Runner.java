@@ -25,7 +25,6 @@ public class Runner {
 										+ ResultSaver.getDirectoryName(prob);
 								new Processor(dirName).run(prob,
 										Constants.ITERATIONS);
-								System.err.println(Arrays.toString(prob));
 							}
 						}
 					}
