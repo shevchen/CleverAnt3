@@ -15,16 +15,16 @@ public class Constants {
 	public static final int STATES_NUMBER = 10;
 	public static final int VISIBLE_CELLS = 8;
 	public static final int SIGNIFICANT_INPUTS = 4;
-	public static final int FIELDS_IN_GENERATION = 100;
-	public static final int ITERATIONS = 1000;
-	public static final int SEARCHER_ITERATIONS = 20000;
-	public static final int STAGNATION_TIME = 400;
+	public static final int FIELDS_IN_GENERATION = 50;
+	public static final int ITERATIONS = 800;
+	public static final int SEARCHER_ITERATIONS = 10000;
+	public static final int STAGNATION_TIME = 200;
 	public static final double STAGNATION_DELTA = 0.001;
 	public static final double NO_STAGNATION_THRESHOLD = 0.4;
 
-	public static final double[] MUTATION_PROBABILITIES = { 0.2, 0.4, 0.6, 0.8,
-			1. };
-	public static final double OTHER_MUTATION_PROBABILITY = 0.1;
+	public static final double[] MUTATION_PROBABILITIES = { 0.05, 0.1, 0.2,
+			0.4, 0.8 };
+	public static final double OTHER_MUTATION_PROBABILITY = 0.02;
 
 	public static final double[] BEST_MUTATION_PROBABILITIES = { 0.9, 0.4, 0.2,
 			0.2 };

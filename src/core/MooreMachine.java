@@ -157,70 +157,58 @@ public class MooreMachine implements Cloneable {
 				moves);
 	}
 
-	private void nextStateMutation() {
+	private void nextStateMutation(double p) {
+		final MersenneTwister rand = Constants.rand;
 		final int states = Constants.STATES_NUMBER;
-		final int masks = (1 << Constants.SIGNIFICANT_INPUTS);
-		final MersenneTwister rand = Constants.rand;
-		int mutatedState = rand.nextInt(states);
-		int mutatedMask = rand.nextInt(masks);
-		int mutationResult = rand.nextInt(states);
-		while (mutationResult == nextState[mutatedState][mutatedMask]) {
-			mutationResult = rand.nextInt(states);
+		for (int i = 0; i < states; ++i) {
+			for (int j = 0; j < 1 << Constants.SIGNIFICANT_INPUTS; ++j) {
+				if (rand.nextDouble() < p) {
+					nextState[i][j] = rand.nextInt(states);
+				}
+			}
 		}
-		nextState[mutatedState][mutatedMask] = mutationResult;
 	}
 
-	private void actionMutation() {
-		final int states = Constants.STATES_NUMBER;
+	private void actionMutation(double p) {
 		final MersenneTwister rand = Constants.rand;
-		int mutatedState = rand.nextInt(states);
-		Turn[] values = Turn.values();
-		int mutationResult = rand.nextInt(values.length);
-		while (mutationResult == moves[mutatedState].ordinal()) {
-			mutationResult = rand.nextInt(values.length);
+		final Turn[] values = Turn.values();
+		for (int i = 0; i < Constants.STATES_NUMBER; ++i) {
+			if (rand.nextDouble() < p) {
+				moves[i] = values[rand.nextInt(values.length)];
+			}
 		}
-		moves[mutatedState] = values[mutationResult];
 	}
 
-	private void significantPredicateMutation() {
-		final int vis = Constants.VISIBLE_CELLS;
-		assert (vis == 8);
+	private void significantPredicateMutation(double p) {
 		final MersenneTwister rand = Constants.rand;
-		int initialSignState = rand.nextInt(vis);
-		while (((significantMask >> initialSignState) & 1) == 0) {
-			initialSignState = rand.nextInt(vis);
+		if (rand.nextDouble() < p) {
+			significantMask = 0;
+			while (Integer.bitCount(significantMask) < Constants.SIGNIFICANT_INPUTS) {
+				significantMask |= 1 << rand.nextInt(Constants.STATES_NUMBER);
+			}
 		}
-		int newSignState = rand.nextInt(vis);
-		while (((significantMask >> newSignState) & 1) == 1) {
-			newSignState = rand.nextInt(vis);
-		}
-		significantMask = significantMask ^ (1 << initialSignState)
-				| (1 << newSignState);
 	}
 
-	private void startStateMutation() {
-		final int states = Constants.STATES_NUMBER;
+	private void startStateMutation(double p) {
 		final MersenneTwister rand = Constants.rand;
-		int newStartState = rand.nextInt(states);
-		while (newStartState == startState) {
-			newStartState = rand.nextInt(states);
+		if (rand.nextDouble() < p) {
+			startState = rand.nextInt(Constants.STATES_NUMBER);
 		}
-		startState = newStartState;
 	}
 
-	public void mutate(Mutation m) {
+	public void mutate(Mutation m, double p) {
 		switch (m) {
 		case NEXT_STATE_MUTATION:
-			nextStateMutation();
+			nextStateMutation(p);
 			return;
 		case ACTION_MUTATION:
-			actionMutation();
+			actionMutation(p);
 			return;
 		case SIGNIFICANT_PREDICATE_MUTATION:
-			significantPredicateMutation();
+			significantPredicateMutation(p);
 			return;
 		case START_STATE_MUTATION:
-			startStateMutation();
+			startStateMutation(p);
 			return;
 		}
 	}

@@ -7,7 +7,6 @@ import core.Field;
 import core.MooreMachine;
 import core.Mutation;
 import core.SimulationResult;
-import ec.util.MersenneTwister;
 
 public class Processor {
 	private Field[] fields;
@@ -21,12 +20,9 @@ public class Processor {
 	}
 
 	private void updateGeneration(int genNumber) {
-		final MersenneTwister rand = Constants.rand;
 		MooreMachine current = best.getAuto().clone();
 		for (Mutation m : Mutation.values()) {
-			if (rand.nextDouble() < prob[m.ordinal()]) {
-				current.mutate(m);
-			}
+			current.mutate(m, prob[m.ordinal()]);
 		}
 		SimulationResult sr = new SimulationResult(current, 0., 0);
 		for (Field f : fields) {
