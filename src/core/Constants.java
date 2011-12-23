@@ -22,8 +22,8 @@ public class Constants {
 	public static final double STAGNATION_DELTA = 0.001;
 	public static final double NO_STAGNATION_THRESHOLD = 0.4;
 
-	public static final double[] MUTATION_PROBABILITIES = { 0.05, 0.1, 0.2,
-			0.4, 0.8 };
+	public static final double[] MUTATION_PROBABILITIES = { 0.05, 0.1, 0.15,
+			0.2, 0.3 };
 	public static final double OTHER_MUTATION_PROBABILITY = 0.02;
 
 	public static final double[] BEST_MUTATION_PROBABILITIES = { 0.9, 0.4, 0.2,
