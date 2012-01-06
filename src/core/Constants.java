@@ -18,7 +18,7 @@ public class Constants {
 	public static final int FIELDS_IN_GENERATION = 50;
 	public static final int ITERATIONS = 2500;
 	public static final int SEARCHER_ITERATIONS = 2500;
-	public static final int STAGNATION_TIME = 200;
+	public static final int STAGNATION_TIME = 400;
 	public static final double NO_STAGNATION_THRESHOLD = 0.42;
 
 	public static final double[] MUTATION_PROBABILITIES = { 0.05, 0.08, 0.1,
