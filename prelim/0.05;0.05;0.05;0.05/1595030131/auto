@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 Eaten part = 0.385186
 Start state = 3
 Significant inputs: 2 5 6
@@ -330,4 +329,3 @@ Moves: MOVE ROTATELEFT ROTATERIGHT ROTATELEFT MOVE ROTATELEFT ROTATERIGHT ROTATE
               9           1101              1
               9           1110              9
               9           1111              1
->>>>>>> 70facf01889413170156fffb384178e3951b7bae
