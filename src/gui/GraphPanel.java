@@ -39,7 +39,7 @@ public class GraphPanel {
 					BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 			ren.setSeriesPaint(i, colors[i]);
 		}
-		chart.setBackgroundPaint(Color.WHITE);
+		chart.getPlot().setBackgroundPaint(Color.WHITE);
 		return chart;
 	}
 
