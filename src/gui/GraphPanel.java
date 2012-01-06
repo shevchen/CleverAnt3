@@ -126,7 +126,7 @@ public class GraphPanel {
 			abscissas[0][i] = i + 1;
 			ordinates[0][i] /= succeeded;
 		}
-		String graphName = "вероятности мутаций: ";
+		String graphName = "";
 		double[] bprob = Constants.BEST_MUTATION_PROBABILITIES;
 		for (int i = 0; i < bprob.length; ++i) {
 			if (i > 0) {
