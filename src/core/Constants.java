@@ -34,7 +34,7 @@ public class Constants {
 			.nanoTime());
 
 	public static final int THREADS = 2;
-	public static final int RUNNINGS_PER_THREAD = 15;
+	public static final int RUNNINGS_PER_THREAD = 10;
 	public static final int SEARCHES_PER_THREAD = 10;
 
 	public static final Paint[] DEFAULT_COLORS = { Color.RED, Color.GREEN,
