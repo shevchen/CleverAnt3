@@ -64,7 +64,7 @@ public class GraphPanel {
 		for (int pr = 0; pr < graphs; ++pr) {
 			Arrays.fill(prob, Constants.COMMON_MUTATION_PROBABILITY);
 			prob[m.ordinal()] = probs[pr];
-			String dirName = Constants.RESULTS_DIR + "/"
+			String dirName = Constants.RESULTS_DIR + "/" + m + "/"
 					+ ResultSaver.getDirectoryName(prob) + "/";
 			int succeeded = 0;
 			for (File f : new File(dirName).listFiles()) {

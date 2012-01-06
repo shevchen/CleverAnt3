@@ -21,7 +21,7 @@ public class Runner {
 										Constants.COMMON_MUTATION_PROBABILITY);
 								prob[m.ordinal()] = p;
 								final String dirName = Constants.RESULTS_DIR
-										+ "/"
+										+ "/" + m + "/"
 										+ ResultSaver.getDirectoryName(prob);
 								new Processor(dirName).run(prob,
 										Constants.ITERATIONS);
