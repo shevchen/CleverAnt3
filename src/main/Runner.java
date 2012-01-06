@@ -18,7 +18,7 @@ public class Runner {
 							for (double p : Constants.MUTATION_PROBABILITIES) {
 								double[] prob = new double[Mutation.values().length];
 								Arrays.fill(prob,
-										Constants.OTHER_MUTATION_PROBABILITY);
+										Constants.COMMON_MUTATION_PROBABILITY);
 								prob[m.ordinal()] = p;
 								final String dirName = Constants.RESULTS_DIR
 										+ "/"

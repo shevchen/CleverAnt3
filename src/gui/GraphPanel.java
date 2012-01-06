@@ -60,7 +60,7 @@ public class GraphPanel {
 		double[][] abscissas = new double[graphs][iter];
 		double[][] ordinates = new double[graphs][iter];
 		for (int pr = 0; pr < graphs; ++pr) {
-			Arrays.fill(prob, Constants.OTHER_MUTATION_PROBABILITY);
+			Arrays.fill(prob, Constants.COMMON_MUTATION_PROBABILITY);
 			prob[m.ordinal()] = probs[pr];
 			String dirName = Constants.RESULTS_DIR + "/"
 					+ ResultSaver.getDirectoryName(prob) + "/";
