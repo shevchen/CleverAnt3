@@ -43,7 +43,7 @@ public class GraphPanel {
 		return chart;
 	}
 
-	private static void readPart(BufferedReader buff, double[] data)
+	private static void addPart(BufferedReader buff, double[] data)
 			throws IOException {
 		for (int i = 0; i < data.length; ++i) {
 			buff.readLine();
@@ -76,7 +76,7 @@ public class GraphPanel {
 				try {
 					BufferedReader buff = new BufferedReader(new FileReader(
 							full));
-					readPart(buff, ordinates[pr]);
+					addPart(buff, ordinates[pr]);
 				} catch (IOException e) {
 					e.printStackTrace();
 					return null;
@@ -103,43 +103,55 @@ public class GraphPanel {
 
 	public static JFreeChart getBestAutoGraph() {
 		final int iter = Constants.SEARCHER_ITERATIONS;
-		double[][] abscissas = new double[1][iter];
-		double[][] ordinates = new double[1][iter];
-		String dirName = Constants.BEST_AUTO_DIR + "/";
-		int succeeded = 0;
-		for (File f : new File(dirName).listFiles()) {
-			File full = new File(dirName + f.getName() + "/"
-					+ Constants.GENERATIONS_FILENAME);
-			if (!full.exists()) {
-				continue;
+		double[][] abscissas = new double[2][iter];
+		double[][] ordinates = new double[2][iter];
+		double[] prelimBest = new double[Mutation.values().length];
+		Arrays.fill(prelimBest, Constants.COMMON_MUTATION_PROBABILITY);
+		for (int i = 0; i < 2; ++i) {
+			String dirName = i == 0 ? (Constants.BEST_AUTO_DIR + "/")
+					: (Constants.PRELIMINARY_RESULTS_DIR + "/"
+							+ ResultSaver.getDirectoryName(prelimBest) + "/");
+			int succeeded = 0;
+			for (File f : new File(dirName).listFiles()) {
+				File full = new File(dirName + f.getName() + "/"
+						+ Constants.GENERATIONS_FILENAME);
+				if (!full.exists()) {
+					continue;
+				}
+				try {
+					BufferedReader buff = new BufferedReader(new FileReader(
+							full));
+					addPart(buff, ordinates[i]);
+				} catch (IOException e) {
+					e.printStackTrace();
+					return null;
+				}
+				++succeeded;
 			}
-			try {
-				BufferedReader buff = new BufferedReader(new FileReader(full));
-				readPart(buff, ordinates[0]);
-			} catch (IOException e) {
-				e.printStackTrace();
-				return null;
+			for (int j = 0; j < iter; ++j) {
+				abscissas[i][j] = j + 1;
+				ordinates[i][j] /= succeeded;
 			}
-			++succeeded;
 		}
-		for (int i = 0; i < iter; ++i) {
-			abscissas[0][i] = i + 1;
-			ordinates[0][i] /= succeeded;
-		}
-		String graphName = "";
+		String[] graphNames = {
+				"Вероятности мутаций:\n",
+				"Предварительные результаты: вероятности мутаций — по "
+						+ Constants.COMMON_MUTATION_PROBABILITY };
 		double[] bprob = Constants.BEST_MUTATION_PROBABILITIES;
 		for (int i = 0; i < bprob.length; ++i) {
 			if (i > 0) {
-				graphName += ", ";
+				graphNames[0] += ", ";
 			}
-			graphName += Mutation.values()[i].getRuType() + " — " + bprob[i];
+			graphNames[0] += Mutation.values()[i].getRuType() + " — "
+					+ bprob[i];
 		}
 		String xLabel = "Номер поколения";
 		String yLabel = "Функция приспособленности — доля собранной еды";
-		Paint[] colors = { Constants.DEFAULT_COLORS[0] };
-		double[] width = { Constants.GRAPH_WIDTH };
-		return createGraph(abscissas, ordinates, null,
-				new String[] { graphName }, xLabel, yLabel, colors, width);
+		Paint[] colors = Arrays.copyOf(Constants.DEFAULT_COLORS, 2);
+		double[] width = new double[2];
+		Arrays.fill(width, Constants.GRAPH_WIDTH);
+		return createGraph(abscissas, ordinates, null, graphNames, xLabel,
+				yLabel, colors, width);
 	}
 
 	public static JFreeChart getPreliminaryGraph() {
@@ -164,7 +176,7 @@ public class GraphPanel {
 				try {
 					BufferedReader buff = new BufferedReader(new FileReader(
 							full));
-					readPart(buff, ordinates[pr]);
+					addPart(buff, ordinates[pr]);
 				} catch (IOException e) {
 					e.printStackTrace();
 					return null;
