@@ -16,14 +16,14 @@ public class Constants {
 	public static final int VISIBLE_CELLS = 8;
 	public static final int SIGNIFICANT_INPUTS = 4;
 	public static final int FIELDS_IN_GENERATION = 50;
-	public static final int ITERATIONS = 3000;
-	public static final int SEARCHER_ITERATIONS = 3000;
+	public static final int ITERATIONS = 2000;
+	public static final int SEARCHER_ITERATIONS = 2000;
 	public static final int STAGNATION_TIME = 700;
 	public static final double STAGNATION_DELTA = 0.001;
 	public static final double NO_STAGNATION_THRESHOLD = 0.4;
 
-	public static final double[] MUTATION_PROBABILITIES = { 0.01, 0.05, 0.08,
-			0.1, 0.12, 0.15 };
+	public static final double[] MUTATION_PROBABILITIES = { 0.05, 0.08, 0.1,
+			0.12, 0.15 };
 
 	public static final double COMMON_MUTATION_PROBABILITY = -1.;
 
@@ -39,7 +39,7 @@ public class Constants {
 
 	public static final Paint[] DEFAULT_COLORS = { Color.RED, Color.GREEN,
 			Color.BLUE, Color.BLACK, new Color(250, 127, 50) /* bronze */,
-			Color.ORANGE, Color.YELLOW, Color.CYAN, Color.GRAY, Color.MAGENTA };
+			Color.CYAN, Color.ORANGE, Color.MAGENTA, Color.YELLOW, Color.GRAY };
 	public static final double GRAPH_WIDTH = 1.5;
 
 	public static final String RESULTS_DIR = "results";

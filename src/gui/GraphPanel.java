@@ -178,7 +178,7 @@ public class GraphPanel {
 		}
 		String[] graphNames = new String[probs.length];
 		for (int i = 0; i < graphs; ++i) {
-			graphNames[i] = "вероятность мутаций " + probs[i];
+			graphNames[i] = "вероятности мутаций " + probs[i];
 		}
 		String xLabel = "Номер поколения";
 		String yLabel = "Функция приспособленности — доля собранной еды";
