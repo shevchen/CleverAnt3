@@ -25,7 +25,7 @@ public class Constants {
 	public static final double[] MUTATION_PROBABILITIES = { 0.05, 0.08, 0.1,
 			0.12, 0.15 };
 
-	public static final double COMMON_MUTATION_PROBABILITY = 0.12;
+	public static final double COMMON_MUTATION_PROBABILITY = 0.11;
 
 	public static final double[] BEST_MUTATION_PROBABILITIES = { 0.1, 0.1,
 			0.15, 0.1 };
@@ -34,7 +34,7 @@ public class Constants {
 			.nanoTime());
 
 	public static final int THREADS = 2;
-	public static final int RUNNINGS_PER_THREAD = 10;
+	public static final int RUNNINGS_PER_THREAD = 15;
 	public static final int SEARCHES_PER_THREAD = 10;
 
 	public static final Paint[] DEFAULT_COLORS = { Color.RED, Color.GREEN,
