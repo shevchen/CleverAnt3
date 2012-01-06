@@ -16,8 +16,8 @@ public class Constants {
 	public static final int VISIBLE_CELLS = 8;
 	public static final int SIGNIFICANT_INPUTS = 4;
 	public static final int FIELDS_IN_GENERATION = 50;
-	public static final int ITERATIONS = 2000;
-	public static final int SEARCHER_ITERATIONS = 2000;
+	public static final int ITERATIONS = 3000;
+	public static final int SEARCHER_ITERATIONS = 3000;
 	public static final int STAGNATION_TIME = 400;
 	public static final double STAGNATION_DELTA = 0.001;
 	public static final double NO_STAGNATION_THRESHOLD = 0.5;
