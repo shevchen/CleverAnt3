@@ -13,7 +13,6 @@ public class Processor {
 	private SimulationResult best;
 	private ResultSaver rs;
 	private double[] prob;
-	private double[] values;
 
 	public Processor(String dirName) {
 		this.rs = new ResultSaver(prob, dirName);
@@ -42,19 +41,24 @@ public class Processor {
 		for (int i = 0; i < fieldsN; ++i) {
 			fields[i] = new Field();
 		}
-		values = new double[iterations];
+		int lastUpdate = 0;
+		double lastPart = 0.;
 		best = new SimulationResult(new MooreMachine(), 0., 0);
 		for (Field f : fields) {
 			FitnessCounter.updateFitness(best, f);
 		}
 		for (int j = 0; j < iterations; ++j) {
 			updateGeneration(j + 1);
-			values[j] = best.getMeanEatenPart();
-			if (j >= Constants.STAGNATION_TIME
-					&& values[j] < Constants.NO_STAGNATION_THRESHOLD
-					&& values[j] - values[j - Constants.STAGNATION_TIME] < Constants.STAGNATION_DELTA) {
+			double curPart = best.getMeanEatenPart();
+			if (curPart > lastPart) {
+				lastUpdate = j + 1;
+				lastPart = curPart;
+			}
+			if ((j + 1) - lastUpdate == Constants.STAGNATION_TIME
+					&& lastPart < Constants.NO_STAGNATION_THRESHOLD) {
 				rs.clear();
-				System.out.println("Restart " + Arrays.toString(prob));
+				System.out.println("Restart " + Arrays.toString(prob)
+						+ " at iteration " + (j + 1) + "/" + iterations);
 				run(prob, iterations);
 				return;
 			}
