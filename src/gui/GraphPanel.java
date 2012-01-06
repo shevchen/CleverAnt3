@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Paint;
 import java.io.BufferedReader;
 import java.io.File;
@@ -38,6 +39,7 @@ public class GraphPanel {
 					BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 			ren.setSeriesPaint(i, colors[i]);
 		}
+		chart.setBackgroundPaint(Color.WHITE);
 		return chart;
 	}
 
@@ -138,5 +140,52 @@ public class GraphPanel {
 		double[] width = { Constants.GRAPH_WIDTH };
 		return createGraph(abscissas, ordinates, null,
 				new String[] { graphName }, xLabel, yLabel, colors, width);
+	}
+
+	public static JFreeChart getPreliminaryGraph() {
+		final int mut = Mutation.values().length;
+		double[] prob = new double[mut];
+		final int iter = Constants.SEARCHER_ITERATIONS;
+		final double[] probs = Constants.MUTATION_PROBABILITIES;
+		final int graphs = probs.length;
+		double[][] abscissas = new double[graphs][iter];
+		double[][] ordinates = new double[graphs][iter];
+		for (int pr = 0; pr < graphs; ++pr) {
+			Arrays.fill(prob, probs[pr]);
+			String dirName = Constants.PRELIMINARY_RESULTS_DIR + "/"
+					+ ResultSaver.getDirectoryName(prob) + "/";
+			int succeeded = 0;
+			for (File f : new File(dirName).listFiles()) {
+				File full = new File(dirName + f.getName() + "/"
+						+ Constants.GENERATIONS_FILENAME);
+				if (!full.exists()) {
+					continue;
+				}
+				try {
+					BufferedReader buff = new BufferedReader(new FileReader(
+							full));
+					readPart(buff, ordinates[pr]);
+				} catch (IOException e) {
+					e.printStackTrace();
+					return null;
+				}
+				++succeeded;
+			}
+			for (int i = 0; i < iter; ++i) {
+				abscissas[pr][i] = i + 1;
+				ordinates[pr][i] /= succeeded;
+			}
+		}
+		String[] graphNames = new String[probs.length];
+		for (int i = 0; i < graphs; ++i) {
+			graphNames[i] = "вероятность мутаций " + probs[i];
+		}
+		String xLabel = "Номер поколения";
+		String yLabel = "Функция приспособленности — доля собранной еды";
+		Paint[] colors = Arrays.copyOf(Constants.DEFAULT_COLORS, graphs);
+		double[] width = new double[graphs];
+		Arrays.fill(width, Constants.GRAPH_WIDTH);
+		return createGraph(abscissas, ordinates, null, graphNames, xLabel,
+				yLabel, colors, width);
 	}
 }
