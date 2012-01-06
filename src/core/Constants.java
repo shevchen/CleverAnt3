@@ -18,7 +18,7 @@ public class Constants {
 	public static final int FIELDS_IN_GENERATION = 50;
 	public static final int ITERATIONS = 2000;
 	public static final int SEARCHER_ITERATIONS = 2000;
-	public static final int STAGNATION_TIME = 700;
+	public static final int STAGNATION_TIME = 500;
 	public static final double STAGNATION_DELTA = 0.001;
 	public static final double NO_STAGNATION_THRESHOLD = 0.4;
 
@@ -35,7 +35,7 @@ public class Constants {
 
 	public static final int THREADS = 2;
 	public static final int RUNNINGS_PER_THREAD = 25;
-	public static final int SEARCHES_PER_THREAD = 5;
+	public static final int SEARCHES_PER_THREAD = 10;
 
 	public static final Paint[] DEFAULT_COLORS = { Color.RED, Color.GREEN,
 			Color.BLUE, Color.BLACK, new Color(250, 127, 50) /* bronze */,
