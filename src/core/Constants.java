@@ -8,7 +8,7 @@ import ec.util.MersenneTwister;
 public class Constants {
 	public static final int TURNS_NUMBER = 200;
 	public static final int FIELD_SIZE = 32;
-	public static final double FOOD_PROBABILITY = 0.05;
+	public static final double FOOD_PROBABILITY = 0.15;
 	public static final int START_ROW = 0;
 	public static final int START_COLUMN = 0;
 	public static final Direction START_DIRECTION = Direction.RIGHT;
@@ -22,17 +22,17 @@ public class Constants {
 	public static final double[] MUTATION_PROBABILITIES = { 0.05, 0.08, 0.1,
 			0.12, 0.15 };
 
-	public static final double COMMON_MUTATION_PROBABILITY = 0.08;
+	public static final double COMMON_MUTATION_PROBABILITY = 0.12;
 
-	public static final double[] BEST_MUTATION_PROBABILITIES = { 0.08, 0.05,
-			0.12, 0.12 };
+	public static final double[] BEST_MUTATION_PROBABILITIES = { 0.08, 0.08,
+			0.12, 0.15 };
 
 	public static final MersenneTwister rand = new MersenneTwister(System
 			.nanoTime());
 
 	public static final int THREADS = 2;
-	public static final int RUNNINGS_PER_THREAD = 50;
-	public static final int SEARCHES_PER_THREAD = 50;
+	public static final int RUNNINGS_PER_THREAD = 25;
+	public static final int SEARCHES_PER_THREAD = 25;
 
 	public static final Paint[] DEFAULT_COLORS = { Color.RED, Color.GREEN,
 			Color.BLUE, Color.BLACK, new Color(250, 127, 50) /* bronze */,
