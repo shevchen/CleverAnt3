@@ -11,6 +11,8 @@ public class BestAutomataSearcher {
 				@Override
 				public void run() {
 					for (int i = 0; i < Constants.SEARCHES_PER_THREAD; ++i) {
+						System.out.println("Starting iteration " + (i + 1)
+								+ "/" + Constants.SEARCHES_PER_THREAD);
 						new Processor(Constants.BEST_AUTO_DIR).run(
 								Constants.BEST_MUTATION_PROBABILITIES,
 								Constants.SEARCHER_ITERATIONS);

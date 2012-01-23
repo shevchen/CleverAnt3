@@ -23,6 +23,9 @@ public class Runner {
 								final String dirName = Constants.RESULTS_DIR
 										+ "/" + m + "/"
 										+ ResultSaver.getDirectoryName(prob);
+								System.out.println("Starting iteration "
+										+ (i + 1) + "/"
+										+ Constants.RUNNINGS_PER_THREAD);
 								new Processor(dirName).run(prob,
 										Constants.ITERATIONS);
 							}

@@ -19,6 +19,8 @@ public class PreliminaryAnalyzer {
 							Arrays.fill(prob, p);
 							final String dirName = Constants.PRELIMINARY_RESULTS_DIR
 									+ "/" + ResultSaver.getDirectoryName(prob);
+							System.out.println("Starting iteration " + (i + 1)
+									+ "/" + Constants.SEARCHES_PER_THREAD);
 							new Processor(dirName).run(prob,
 									Constants.SEARCHER_ITERATIONS);
 						}
