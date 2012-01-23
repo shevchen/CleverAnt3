@@ -46,6 +46,7 @@ public class Constants {
 	public static final String BEST_AUTO_DIR = "bestauto";
 	public static final String FOOD_FILENAME = "aphid.jpg";
 	public static final String SCREENSHOT_FILENAME = "graph.png";
+	public static final double BEST_RESULTS_PART = 0.2;
 	public static final int SCREENSHOT_WIDTH = 1280;
 	public static final int SCREENSHOT_HEIGHT = 1024;
 

@@ -7,7 +7,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.StringTokenizer;
 
 import main.ResultSaver;
@@ -53,6 +56,70 @@ public class GraphPanel {
 		}
 	}
 
+	private static double getAutoResult(File f) throws IOException {
+		StringTokenizer tok = new StringTokenizer(new BufferedReader(
+				new FileReader(f)).readLine());
+		for (int i = 0; i < 3; ++i) {
+			tok.nextToken();
+		}
+		return Double.parseDouble(tok.nextToken());
+	}
+
+	private static void getResult(String dirName, double[] data, int iter) {
+		int succeeded = 0;
+		ArrayList<Double> finalRes = new ArrayList<Double>();
+		for (File f : new File(dirName).listFiles()) {
+			if (!new File(dirName + f.getName() + "/"
+					+ Constants.GENERATIONS_FILENAME).exists()) {
+				continue;
+			}
+			File auto = new File(dirName + f.getName() + "/"
+					+ Constants.AUTO_FILENAME);
+			if (!auto.exists()) {
+				continue;
+			}
+			try {
+				finalRes.add(getAutoResult(auto));
+			} catch (IOException e) {
+				e.printStackTrace();
+				return;
+			}
+			++succeeded;
+		}
+		Collections.sort(finalRes, new Comparator<Double>() {
+			@Override
+			public int compare(Double o1, Double o2) {
+				return Double.compare(o2, o1);
+			}
+		});
+		int part = (int) (succeeded * Constants.BEST_RESULTS_PART);
+		if (part == 0) {
+			return;
+		}
+		for (File f : new File(dirName).listFiles()) {
+			File auto = new File(dirName + f.getName() + "/"
+					+ Constants.AUTO_FILENAME);
+			File gen = new File(dirName + f.getName() + "/"
+					+ Constants.GENERATIONS_FILENAME);
+			if (!auto.exists() || !gen.exists()) {
+				continue;
+			}
+			try {
+				double autoRes = getAutoResult(auto);
+				if (autoRes < finalRes.get(part - 1)) {
+					continue;
+				}
+				addPart(new BufferedReader(new FileReader(gen)), data);
+			} catch (IOException e) {
+				e.printStackTrace();
+				return;
+			}
+		}
+		for (int i = 0; i < iter; ++i) {
+			data[i] /= part;
+		}
+	}
+
 	public static JFreeChart getGraph(Mutation m) {
 		final int mut = Mutation.values().length;
 		double[] prob = new double[mut];
@@ -66,26 +133,9 @@ public class GraphPanel {
 			prob[m.ordinal()] = probs[pr];
 			String dirName = Constants.RESULTS_DIR + "/" + m + "/"
 					+ ResultSaver.getDirectoryName(prob) + "/";
-			int succeeded = 0;
-			for (File f : new File(dirName).listFiles()) {
-				File full = new File(dirName + f.getName() + "/"
-						+ Constants.GENERATIONS_FILENAME);
-				if (!full.exists()) {
-					continue;
-				}
-				try {
-					BufferedReader buff = new BufferedReader(new FileReader(
-							full));
-					addPart(buff, ordinates[pr]);
-				} catch (IOException e) {
-					e.printStackTrace();
-					return null;
-				}
-				++succeeded;
-			}
+			getResult(dirName, ordinates[pr], iter);
 			for (int i = 0; i < iter; ++i) {
 				abscissas[pr][i] = i + 1;
-				ordinates[pr][i] /= succeeded;
 			}
 		}
 		String[] graphNames = new String[probs.length];
@@ -111,26 +161,9 @@ public class GraphPanel {
 			String dirName = i == 0 ? (Constants.BEST_AUTO_DIR + "/")
 					: (Constants.PRELIMINARY_RESULTS_DIR + "/"
 							+ ResultSaver.getDirectoryName(prelimBest) + "/");
-			int succeeded = 0;
-			for (File f : new File(dirName).listFiles()) {
-				File full = new File(dirName + f.getName() + "/"
-						+ Constants.GENERATIONS_FILENAME);
-				if (!full.exists()) {
-					continue;
-				}
-				try {
-					BufferedReader buff = new BufferedReader(new FileReader(
-							full));
-					addPart(buff, ordinates[i]);
-				} catch (IOException e) {
-					e.printStackTrace();
-					return null;
-				}
-				++succeeded;
-			}
+			getResult(dirName, ordinates[i], iter);
 			for (int j = 0; j < iter; ++j) {
 				abscissas[i][j] = j + 1;
-				ordinates[i][j] /= succeeded;
 			}
 		}
 		String[] graphNames = {
@@ -166,26 +199,9 @@ public class GraphPanel {
 			Arrays.fill(prob, probs[pr]);
 			String dirName = Constants.PRELIMINARY_RESULTS_DIR + "/"
 					+ ResultSaver.getDirectoryName(prob) + "/";
-			int succeeded = 0;
-			for (File f : new File(dirName).listFiles()) {
-				File full = new File(dirName + f.getName() + "/"
-						+ Constants.GENERATIONS_FILENAME);
-				if (!full.exists()) {
-					continue;
-				}
-				try {
-					BufferedReader buff = new BufferedReader(new FileReader(
-							full));
-					addPart(buff, ordinates[pr]);
-				} catch (IOException e) {
-					e.printStackTrace();
-					return null;
-				}
-				++succeeded;
-			}
+			getResult(dirName, ordinates[pr], iter);
 			for (int i = 0; i < iter; ++i) {
 				abscissas[pr][i] = i + 1;
-				ordinates[pr][i] /= succeeded;
 			}
 		}
 		String[] graphNames = new String[probs.length];
