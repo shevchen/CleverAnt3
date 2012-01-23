@@ -19,8 +19,8 @@ public class Constants {
 	public static final int ITERATIONS = 2500;
 	public static final int SEARCHER_ITERATIONS = 2500;
 
-	public static final double[] MUTATION_PROBABILITIES = { 0.05, 0.08, 0.1,
-			0.12, 0.15 };
+	public static final double[] MUTATION_PROBABILITIES = { 0.01, 0.03, 0.05,
+			0.08, 0.1 };
 
 	public static final double COMMON_MUTATION_PROBABILITY = 0.05;
 

@@ -14,13 +14,13 @@ public class PreliminaryAnalyzer {
 				@Override
 				public void run() {
 					for (int i = 0; i < Constants.SEARCHES_PER_THREAD; ++i) {
+						System.out.println("Starting iteration " + (i + 1)
+								+ "/" + Constants.SEARCHES_PER_THREAD);
 						for (double p : Constants.MUTATION_PROBABILITIES) {
 							double[] prob = new double[Mutation.values().length];
 							Arrays.fill(prob, p);
 							final String dirName = Constants.PRELIMINARY_RESULTS_DIR
 									+ "/" + ResultSaver.getDirectoryName(prob);
-							System.out.println("Starting iteration " + (i + 1)
-									+ "/" + Constants.SEARCHES_PER_THREAD);
 							new Processor(dirName).run(prob,
 									Constants.SEARCHER_ITERATIONS);
 						}

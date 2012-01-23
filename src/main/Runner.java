@@ -14,6 +14,8 @@ public class Runner {
 				@Override
 				public void run() {
 					for (int i = 0; i < Constants.RUNNINGS_PER_THREAD; ++i) {
+						System.out.println("Starting iteration " + (i + 1)
+								+ "/" + Constants.RUNNINGS_PER_THREAD);
 						for (Mutation m : Mutation.values()) {
 							for (double p : Constants.MUTATION_PROBABILITIES) {
 								double[] prob = new double[Mutation.values().length];
@@ -23,9 +25,6 @@ public class Runner {
 								final String dirName = Constants.RESULTS_DIR
 										+ "/" + m + "/"
 										+ ResultSaver.getDirectoryName(prob);
-								System.out.println("Starting iteration "
-										+ (i + 1) + "/"
-										+ Constants.RUNNINGS_PER_THREAD);
 								new Processor(dirName).run(prob,
 										Constants.ITERATIONS);
 							}
