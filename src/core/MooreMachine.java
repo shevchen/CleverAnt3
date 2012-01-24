@@ -104,7 +104,7 @@ public class MooreMachine implements Cloneable {
 		if (rand.nextDouble() < p) {
 			significantMask = 0;
 			while (Integer.bitCount(significantMask) < Constants.SIGNIFICANT_INPUTS) {
-				significantMask |= 1 << rand.nextInt(Constants.STATES_NUMBER);
+				significantMask |= 1 << rand.nextInt(Constants.VISIBLE_CELLS);
 			}
 		}
 	}
