@@ -15,7 +15,7 @@ public class Processor {
 	private double[] prob;
 
 	public Processor(String dirName) {
-		this.rs = new ResultSaver(prob, dirName);
+		this.rs = new ResultSaver(dirName);
 	}
 
 	private void updateGeneration(int genNumber) {
@@ -35,7 +35,7 @@ public class Processor {
 	}
 
 	public void run(double[] prob, final int iterations) {
-		this.prob = prob;
+		this.prob = Arrays.copyOf(prob, prob.length);
 		final int fieldsN = Constants.FIELDS_IN_GENERATION;
 		fields = new Field[fieldsN];
 		for (int i = 0; i < fieldsN; ++i) {

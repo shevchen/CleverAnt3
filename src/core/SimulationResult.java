@@ -25,6 +25,9 @@ public class SimulationResult implements Comparable<SimulationResult> {
 	}
 
 	public double getMeanEatenPart() {
+		if (fieldsTested == 0) {
+			return 0.;
+		}
 		return eatenPartsSum / fieldsTested;
 	}
 

@@ -8,15 +8,15 @@ import ec.util.MersenneTwister;
 public class Constants {
 	public static final int TURNS_NUMBER = 200;
 	public static final int FIELD_SIZE = 32;
-	public static final double FOOD_PROBABILITY = 0.15;
+	public static final double FOOD_PROBABILITY = 0.2;
 	public static final int START_ROW = 0;
 	public static final int START_COLUMN = 0;
 	public static final Direction START_DIRECTION = Direction.RIGHT;
-	public static final int STATES_NUMBER = 10;
+	public static final int STATES_NUMBER = 9;
 	public static final int VISIBLE_CELLS = 8;
-	public static final int SIGNIFICANT_INPUTS = 4;
+	public static final int SIGNIFICANT_INPUTS = 3;
 	public static final int FIELDS_IN_GENERATION = 50;
-	public static final int ITERATIONS = 2500;
+	public static final int RUNNER_ITERATIONS = 2500;
 	public static final int SEARCHER_ITERATIONS = 2500;
 
 	public static final double[] MUTATION_PROBABILITIES = { 0.01, 0.03, 0.05,
@@ -31,8 +31,8 @@ public class Constants {
 			.nanoTime());
 
 	public static final int THREADS = 2;
-	public static final int RUNNINGS_PER_THREAD = 25;
-	public static final int SEARCHES_PER_THREAD = 25;
+	public static final int RUNNINGS_PER_THREAD = 50;
+	public static final int SEARCHES_PER_THREAD = 50;
 
 	public static final Paint[] DEFAULT_COLORS = { Color.RED, Color.GREEN,
 			Color.BLUE, Color.BLACK, new Color(250, 127, 50) /* bronze */,
@@ -46,7 +46,6 @@ public class Constants {
 	public static final String BEST_AUTO_DIR = "bestauto";
 	public static final String FOOD_FILENAME = "aphid.jpg";
 	public static final String SCREENSHOT_FILENAME = "graph.png";
-	public static final double BEST_RESULTS_PART = 0.2;
 	public static final int SCREENSHOT_WIDTH = 1280;
 	public static final int SCREENSHOT_HEIGHT = 1024;
 

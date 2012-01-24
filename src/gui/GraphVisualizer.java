@@ -22,19 +22,31 @@ import core.Constants;
 import core.Mutation;
 
 public class GraphVisualizer {
+	private static int maxMeanIndex = 0;
 	private static int mutationIndex = 0;
 
 	private static void createMainFrame() {
-		JLabel label = new JLabel(
-				"График зависимости значения функции приспособленности от вероятности мутации");
+		JLabel label1 = new JLabel("График зависимости");
+		JComboBox combo1 = new JComboBox(new String[] { "максимального",
+				"среднего" });
+		combo1.setSelectedIndex(maxMeanIndex);
+		combo1.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox cb = (JComboBox) e.getSource();
+				maxMeanIndex = cb.getSelectedIndex();
+			}
+		});
+		JLabel label2 = new JLabel(
+				"значения функции приспособленности от вероятности мутации");
 		Mutation[] values = Mutation.values();
 		String[] names = new String[values.length];
 		for (int i = 0; i < values.length; ++i) {
 			names[i] = values[i].getRuType();
 		}
-		JComboBox combo = new JComboBox(names);
-		combo.setSelectedIndex(mutationIndex);
-		combo.addActionListener(new ActionListener() {
+		JComboBox combo2 = new JComboBox(names);
+		combo2.setSelectedIndex(mutationIndex);
+		combo2.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JComboBox cb = (JComboBox) e.getSource();
@@ -48,14 +60,18 @@ public class GraphVisualizer {
 				Thread th = new Thread(new Runnable() {
 					@Override
 					public void run() {
-						String title = "Зависимость значения функции приспособленности от вероятности мутации "
+						final int copy = maxMeanIndex;
+						String title = "Зависимость "
+								+ (copy == 0 ? "максимального" : "среднего")
+								+ " значения функции приспособленности от вероятности мутации "
 								+ Mutation.values()[mutationIndex].getRuType();
 						JFrame newFrame = new JFrame(title);
 						Mutation m = Mutation.values()[mutationIndex];
-						JFreeChart chart = GraphPanel.getGraph(m);
+						JFreeChart chart = GraphPanel.getGraph(m, copy == 0);
 						String screenshotDir = Constants.RESULTS_DIR + "/" + m;
 						new File(screenshotDir).mkdirs();
 						String screenshotFile = screenshotDir + "/"
+								+ (copy == 0 ? "max" : "mean")
 								+ Constants.SCREENSHOT_FILENAME;
 						try {
 							ChartUtilities.saveChartAsPNG(new File(
@@ -79,9 +95,13 @@ public class GraphVisualizer {
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 		final int strut = Constants.DEFAULT_STRUT;
 		panel.add(Box.createHorizontalStrut(strut));
-		panel.add(label);
+		panel.add(label1);
 		panel.add(Box.createHorizontalStrut(strut));
-		panel.add(combo);
+		panel.add(combo1);
+		panel.add(Box.createHorizontalStrut(strut));
+		panel.add(label2);
+		panel.add(Box.createHorizontalStrut(strut));
+		panel.add(combo2);
 		panel.add(Box.createHorizontalStrut(strut));
 		panel.add(button);
 		panel.add(Box.createHorizontalStrut(strut));

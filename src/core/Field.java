@@ -187,9 +187,8 @@ public class Field {
 	public static int simulate(MooreMachine auto, Field f) {
 		final int size = Constants.FIELD_SIZE;
 		boolean[][] curField = new boolean[size][size];
-		for (int i = 0; i < Constants.FIELD_SIZE; ++i) {
-			System.arraycopy(f.field[i], 0, curField[i], 0,
-					Constants.FIELD_SIZE);
+		for (int i = 0; i < size; ++i) {
+			System.arraycopy(f.field[i], 0, curField[i], 0, size);
 		}
 		AntState antState = new AntState(auto.getStartState(),
 				Constants.START_ROW, Constants.START_COLUMN,

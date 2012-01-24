@@ -24,7 +24,7 @@ public class ResultSaver {
 		return name;
 	}
 
-	public ResultSaver(double[] prob, final String dirName) {
+	public ResultSaver(final String dirName) {
 		long id = (System.currentTimeMillis() * Thread.currentThread()
 				.hashCode())
 				& Integer.MAX_VALUE;

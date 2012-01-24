@@ -26,8 +26,7 @@ public class TransitionTableCreator implements Runnable {
 	private JPanel getTransitionTable() {
 		String[] columnNames = { "Предикат", "Номер следующего состояния" };
 		final int rows = 1 << Constants.SIGNIFICANT_INPUTS;
-		final int cols = columnNames.length;
-		JLabel[][] data = new JLabel[rows][cols];
+		JLabel[][] data = new JLabel[rows][2];
 		for (int i = 0; i < rows; ++i) {
 			data[i][0] = new JLabel(MooreMachine.getBitString(i,
 					Constants.SIGNIFICANT_INPUTS), SwingConstants.CENTER);
@@ -37,7 +36,7 @@ public class TransitionTableCreator implements Runnable {
 		JTable table = new JTable(new TransitionTableModel(data, columnNames));
 		table.setDefaultRenderer(JLabel.class, new JLabelRenderer());
 		table.setRowHeight(Constants.TRANSITION_TABLE_HEIGHT);
-		for (int i = 0; i < cols; ++i) {
+		for (int i = 0; i < 2; ++i) {
 			table.getColumnModel().getColumn(i).setPreferredWidth(
 					Constants.TRANSITION_TABLE_WIDTH[i]);
 		}

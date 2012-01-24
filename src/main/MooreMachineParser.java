@@ -56,9 +56,9 @@ public class MooreMachineParser {
 		st = new StringTokenizer(br.readLine());
 		st.nextToken();
 		final int states = Constants.STATES_NUMBER;
-		Turn[] moves = new Turn[states];
+		int[] moves = new int[states];
 		for (int i = 0; i < states; ++i) {
-			moves[i] = Turn.valueOf(st.nextToken());
+			moves[i] = Turn.valueOf(st.nextToken()).ordinal();
 		}
 		br.readLine();
 		int[][] nextState = new int[states][1 << sign];

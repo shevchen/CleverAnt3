@@ -26,7 +26,7 @@ public class Runner {
 										+ "/" + m + "/"
 										+ ResultSaver.getDirectoryName(prob);
 								new Processor(dirName).run(prob,
-										Constants.ITERATIONS);
+										Constants.RUNNER_ITERATIONS);
 							}
 						}
 					}
