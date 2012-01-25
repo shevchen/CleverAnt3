@@ -8,7 +8,6 @@ import java.util.StringTokenizer;
 
 import core.Constants;
 import core.MooreMachine;
-import core.Turn;
 
 public class MooreMachineParser {
 	private static File findBest() throws IOException {
@@ -58,7 +57,7 @@ public class MooreMachineParser {
 		final int states = Constants.STATES_NUMBER;
 		int[] moves = new int[states];
 		for (int i = 0; i < states; ++i) {
-			moves[i] = Turn.valueOf(st.nextToken()).ordinal();
+			moves[i] = Integer.parseInt(st.nextToken());
 		}
 		br.readLine();
 		int[][] nextState = new int[states][1 << sign];

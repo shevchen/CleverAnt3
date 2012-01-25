@@ -36,7 +36,7 @@ public class Constants {
 
 	public static final Paint[] DEFAULT_COLORS = { Color.RED, Color.GREEN,
 			Color.BLUE, Color.BLACK, new Color(250, 127, 50) /* bronze */,
-			Color.CYAN, Color.ORANGE, Color.MAGENTA, Color.YELLOW, Color.GRAY };
+			Color.MAGENTA, Color.CYAN, Color.ORANGE, Color.YELLOW, Color.GRAY };
 	public static final double GRAPH_WIDTH = 1.5;
 
 	public static final String RESULTS_DIR = "results";
