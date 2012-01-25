@@ -83,6 +83,7 @@ public class BestAutoGraphVisualizer {
 		panel.add(combo);
 		panel.add(Box.createHorizontalStrut(strut));
 		panel.add(label2);
+		panel.add(Box.createHorizontalStrut(strut));
 		panel.add(button);
 		panel.add(Box.createHorizontalStrut(strut));
 		JFrame frame = new JFrame("Графики зависимостей");
