@@ -19,10 +19,10 @@ public class Constants {
 	public static final int RUNNER_ITERATIONS = 2500;
 	public static final int SEARCHER_ITERATIONS = 2500;
 
-	public static final double[] MUTATION_PROBABILITIES = { 0.01, 0.03, 0.05,
-			0.08, 0.1 };
+	public static final double[] MUTATION_PROBABILITIES = { 0.03, 0.05, 0.08,
+			0.1, 0.12, 0.15 };
 
-	public static final double COMMON_MUTATION_PROBABILITY = 0.05;
+	public static final double COMMON_MUTATION_PROBABILITY = 0.12;
 
 	public static final double[] BEST_MUTATION_PROBABILITIES = { 0.08, 0.05,
 			0.1, 0.08 };
@@ -32,7 +32,7 @@ public class Constants {
 
 	public static final int THREADS = 2;
 	public static final int RUNNINGS_PER_THREAD = 50;
-	public static final int SEARCHES_PER_THREAD = 50;
+	public static final int SEARCHES_PER_THREAD = 100;
 
 	public static final Paint[] DEFAULT_COLORS = { Color.RED, Color.GREEN,
 			Color.BLUE, Color.BLACK, new Color(250, 127, 50) /* bronze */,

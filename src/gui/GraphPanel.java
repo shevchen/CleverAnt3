@@ -60,7 +60,6 @@ public class GraphPanel {
 
 	private static void getResult(String dirName, double[] data, boolean max) {
 		int succeeded = 0;
-		System.err.println(dirName);
 		for (File f : new File(dirName).listFiles()) {
 			File gen = new File(dirName + f.getName() + "/"
 					+ Constants.GENERATIONS_FILENAME);
@@ -69,6 +68,7 @@ public class GraphPanel {
 			}
 			try {
 				updatePart(new BufferedReader(new FileReader(gen)), data, max);
+				++succeeded;
 			} catch (IOException e) {
 				e.printStackTrace();
 				return;
